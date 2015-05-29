@@ -2,7 +2,7 @@
 	Properties
 	{
 		_MainTex ("Base (RGB)", 2D) = "white" {}
-		[HideInInspector] _ReflectionTex ("", 2D) = "white" {}
+		_ReflectionTex ("", 2D) = "white" {}
 	}
 	SubShader
 	{
