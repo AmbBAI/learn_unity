@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: water_test
+  m_Shader: {fileID: 4800000, guid: 01e528b91a30d384c8dff62040e00180, type: 3}
+  m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: lightmap
+        second:
+          m_Texture: {fileID: 2800000, guid: e1f54206e059f824f8cf3453f8ba4949, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: normal0
+        second:
+          m_Texture: {fileID: 2800000, guid: a85459b0bcf028a459b1a5ac50186aa9, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: foam
+        second:
+          m_Texture: {fileID: 2800000, guid: e1f54206e059f824f8cf3453f8ba4949, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _lightmap
+        second:
+          m_Texture: {fileID: 2800000, guid: 6ee251b71edcbc941bc7f3587bf304f8, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
+      data:
+        first:
+          name: WAVE_MOVEMENT
+        second: .0500000007
+      data:
+        first:
+          name: WAVE_HEIGHT
+        second: .0799999982
+      data:
+        first:
+          name: u_1DivLevelWidth
+        second: .0500000007
+      data:
+        first:
+          name: u_1DivLevelHeight
+        second: .0500000007
+      data:
+        first:
+          name: u_reflectionFactor
+        second: .300000012
+      data:
+        first:
+          name: WATER_MOVEMENT
+        second: -.00999999978
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: u_lightPos
+        second: {r: -10, g: 10, b: -10, a: 0}
+      data:
+        first:
+          name: SHORE_DARK
+        second: {r: .441176474, g: .37486577, b: .314662635, a: 1}
+      data:
+        first:
+          name: SHORE_LIGHT
+        second: {r: .933823526, g: .838069797, b: .631704152, a: 1}
+      data:
+        first:
+          name: SEA_DARK
+        second: {r: 0, g: .164987817, b: .286764681, a: 1}
+      data:
+        first:
+          name: SEA_LIGHT
+        second: {r: .302768171, g: .823529422, b: .823529422, a: 1}
