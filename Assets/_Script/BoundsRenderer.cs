@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,13 +12,17 @@ public class BoundsRenderer : MonoBehaviour {
 			0, 4, /**/ 1, 5, /**/ 2, 6, /**/ 3, 7
 		};
 
-	private List<MeshFilter> meshFilters = new List<MeshFilter>();
+	const int vertexBuffSize = 65000;
+
 	class MeshData
 	{
-		public List<Vector3> vertices = new List<Vector3>();
-		public List<int> indices = new List<int>();
-		public List<Color> colors = new List<Color>();
+		public Vector3[] vertices = new Vector3[vertexBuffSize];
+		public Color[] colors = new Color[vertexBuffSize];
+		public int[] indices = new int[vertexBuffSize * 3];
+		public int vertexCount = 0;
+
 		public Mesh mesh = new Mesh();
+		public MeshFilter meshFilter = null;
 	}
 	private List<MeshData> datas = new List<MeshData>();
 
@@ -29,12 +34,12 @@ public class BoundsRenderer : MonoBehaviour {
 		boundsRendererPrefab = Resources.Load<GameObject>("BoundsRenderer");
 	}
 
-	public void DrawBounds(Bounds bounds, Color color)
+	public void AddBounds(Bounds bounds, Color color)
 	{
 		MeshData meshData = null;
 		foreach (var data in datas)
 		{
-			if (data.vertices.Count >= (65000 / 8 * 8)) continue;
+			if (data.vertexCount >= vertexBuffSize) continue;
 			else meshData = data;
 		}
 		if (meshData == null)
@@ -44,44 +49,34 @@ public class BoundsRenderer : MonoBehaviour {
 		}
 
 		List<Vector3> vertex = new List<Vector3>();
-		vertex.Add(bounds.min);
-		vertex.Add(new Vector3(bounds.min.x, bounds.min.y, bounds.max.z));
-		vertex.Add(new Vector3(bounds.min.x, bounds.max.y, bounds.min.z));
-		vertex.Add(new Vector3(bounds.min.x, bounds.max.y, bounds.max.z));
-		vertex.Add(new Vector3(bounds.max.x, bounds.min.y, bounds.min.z));
-		vertex.Add(new Vector3(bounds.max.x, bounds.min.y, bounds.max.z));
-		vertex.Add(new Vector3(bounds.max.x, bounds.max.y, bounds.min.z));
-		vertex.Add(bounds.max);
+		meshData.vertices[meshData.vertexCount + 0] = bounds.min;
+		meshData.vertices[meshData.vertexCount + 1].Set(bounds.min.x, bounds.min.y, bounds.max.z);
+		meshData.vertices[meshData.vertexCount + 2].Set(bounds.min.x, bounds.max.y, bounds.min.z);
+		meshData.vertices[meshData.vertexCount + 3].Set(bounds.min.x, bounds.max.y, bounds.max.z);
+		meshData.vertices[meshData.vertexCount + 4].Set(bounds.max.x, bounds.min.y, bounds.min.z);
+		meshData.vertices[meshData.vertexCount + 5].Set(bounds.max.x, bounds.min.y, bounds.max.z);
+		meshData.vertices[meshData.vertexCount + 6].Set(bounds.max.x, bounds.max.y, bounds.min.z);
+		meshData.vertices[meshData.vertexCount + 7] = bounds.max;
 
-		int offset = meshData.vertices.Count;
-		meshData.vertices.AddRange(vertex);
-		for (int i = 0; i < 8; ++i) meshData.colors.Add(color);
-		for (int i = 0; i < 24; ++i) meshData.indices.Add(gWireFrameIndex[i] + offset);
+		for (int i = 0; i < 8; ++i) meshData.colors[meshData.vertexCount + i] = color;
+		for (int i = 0; i < 24; ++i) meshData.indices[meshData.vertexCount * 3 + i] = gWireFrameIndex[i] + meshData.vertexCount;
+		meshData.vertexCount += 8;
 	}
 
 	public void ClearBounds()
 	{
-		datas.Clear();
-		UpdateMesh();
+		foreach (var data in datas)
+		{
+			data.vertexCount = 0;
+			Array.Clear(data.indices, 0, data.indices.Length);
+		}
 	}
 
 	public void UpdateMesh()
 	{
-		for (int i=0; i<Mathf.Max(meshFilters.Count, datas.Count); ++i)
+		for (int i=0; i<datas.Count; ++i)
 		{
-			if (i < datas.Count)
-			{
-				datas[i].mesh.vertices = datas[i].vertices.ToArray();
-				datas[i].mesh.colors = datas[i].colors.ToArray();
-				datas[i].mesh.SetIndices(datas[i].indices.ToArray(), MeshTopology.Lines, 0);
-			}
-
-			if (i < Mathf.Min(datas.Count, meshFilters.Count))
-			{
-				meshFilters[i].gameObject.SetActive(true);
-				meshFilters[i].mesh = datas[i].mesh;
-			}
-			else if (i < datas.Count)
+			if (datas[i].meshFilter == null)
 			{
 				GameObject obj = GameObject.Instantiate(boundsRendererPrefab) as GameObject;
 				obj.SetActive(true);
@@ -89,15 +84,20 @@ public class BoundsRenderer : MonoBehaviour {
 				obj.transform.localPosition = Vector3.zero;
 				obj.transform.localRotation = Quaternion.identity;
 				obj.transform.localScale = Vector3.one;
-				MeshFilter meshFilter = obj.GetComponent<MeshFilter>();
+				datas[i].meshFilter = obj.GetComponent<MeshFilter>();
+				datas[i].meshFilter.mesh = datas[i].mesh;
+			}
 
-				meshFilter.mesh = datas[i].mesh;
-				meshFilters.Add(meshFilter);
-			}
-			else
+			if (datas[i].vertexCount <= 0)
 			{
-				meshFilters[i].gameObject.SetActive(false);
+				datas[i].meshFilter.gameObject.SetActive(false);
+				continue;
 			}
+
+			datas[i].mesh.vertices = datas[i].vertices;
+			datas[i].mesh.colors = datas[i].colors;
+			datas[i].mesh.SetIndices(datas[i].indices, MeshTopology.Lines, 0);
+			datas[i].meshFilter.gameObject.SetActive(true);
 		}
 	}
 }

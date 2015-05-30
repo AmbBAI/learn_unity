@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class RenderMeshBounds : MonoBehaviour {
 
 	Octree octree = new Octree();
+	BIHtree bihtree = new BIHtree();
 
 	void Start()
 	{
@@ -19,14 +20,14 @@ public class RenderMeshBounds : MonoBehaviour {
 			bounds.Encapsulate(meshF.mesh.bounds);
 		}
 
-		octree.BuildTree(all, bounds);
+		bihtree.BuildTree(all, 5);
 	}
 
 	void Update()
 	{
 		BoundsRenderer r = BoundsRenderer.Instance;
 		r.ClearBounds();
-		octree.DrawTree();
+		bihtree.DrawTree();
 		r.UpdateMesh();
 	}
 }

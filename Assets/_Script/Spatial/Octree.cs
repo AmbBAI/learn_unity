@@ -82,12 +82,12 @@ public class Octree {
 
 		TraversalTree(root, delegate(OctreeNode node)
 		{
-			render.DrawBounds(node.bounds, Color.grey);
+			render.AddBounds(node.bounds, Color.grey);
 			return true;
 
 			//if (node.bounds.IntersectRay(ray))
 			//{
-			//	render.DrawBounds(node.bounds, Color.green);
+			//	render.AddBounds(node.bounds, Color.green);
 			//	return true;
 			//}
 			//return false;
