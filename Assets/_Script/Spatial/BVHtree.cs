@@ -3,33 +3,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BIHtree {
+public class BVHtree {
 
-	public class BIHtreeNode
+	public class BVHtreeNode
 	{
 		public Bounds bounds;
-		public BIHtreeNode left = null;
-		public BIHtreeNode right = null;
+		public BVHtreeNode left = null;
+		public BVHtreeNode right = null;
 		public List<Bounds> objs = new List<Bounds>();
 	}
 
-	BIHtreeNode root = new BIHtreeNode();
+	BVHtreeNode root = null;
 
 	delegate bool NodeSplitJudgeFunc(Bounds bounds);
-	public delegate bool TraversalDelegate(BIHtreeNode node);
+	public delegate bool TraversalDelegate(BVHtreeNode node);
 
 	int nodeObjCount = 10;
 	int maxDepth = -1;
 
 	public void BuildTree(List<Bounds> objList, int nodeObjCount = 10, int maxDepth = -1)
 	{
+		root = new BVHtreeNode();
 		root.objs = objList;
 		this.nodeObjCount = nodeObjCount;
 		this.maxDepth = maxDepth;
 		RecursiveBuildTree(root, 0);
 	}
 
-	void RecursiveBuildTree(BIHtreeNode node, int depth)
+	void RecursiveBuildTree(BVHtreeNode node, int depth)
 	{
 		if (node.objs.Count <= 0) return;
 		node.bounds = node.objs[0];
@@ -61,9 +62,9 @@ public class BIHtree {
 		if (leftObjs.Count <= 0 || rightObjs.Count <= 0) return;
 		else
 		{
-			node.left = new BIHtreeNode();
+			node.left = new BVHtreeNode();
 			node.left.objs = leftObjs;
-			node.right = new BIHtreeNode();
+			node.right = new BVHtreeNode();
 			node.right.objs = rightObjs;
 			node.objs.Clear();
 
@@ -71,6 +72,7 @@ public class BIHtree {
 			RecursiveBuildTree(node.right, depth+1);
 		}
 	}
+
 
 	void SplitNodes(List<Bounds> objs, ref List<Bounds> leftObjs, ref List<Bounds> rightObjs, NodeSplitJudgeFunc judge)
 	{
@@ -81,34 +83,23 @@ public class BIHtree {
 		}
 	}
 
-	public void DrawTree()
+	void ClearTree()
 	{
-		BoundsRenderer render = BoundsRenderer.Instance;
-		if (render == null) return;
-
-		Camera camera = Camera.main;
-		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
-		TraversalTree(root, delegate(BIHtreeNode node)
-		{
-			render.AddBounds(node.bounds, Color.grey);
-			return true;
-
-			//if (node.bounds.IntersectRay(ray))
-			//{
-			//	render.AddBounds(node.bounds, Color.green);
-			//	return true;
-			//}
-			//return false;
-		});
+		root = null;
 	}
 
-	public void TraversalTree(BIHtreeNode node, TraversalDelegate action)
+	public void TraversalTree(TraversalDelegate action)
+	{
+		if (root == null) return;
+		RecursiveTraversalTree(root, action);
+	}
+
+	void RecursiveTraversalTree(BVHtreeNode node, TraversalDelegate action)
 	{
 		if (action(node))
 		{
-			if (node.left != null) TraversalTree(node.left, action);
-			if (node.right != null) TraversalTree(node.right, action);
+			if (node.left != null) RecursiveTraversalTree(node.left, action);
+			if (node.right != null) RecursiveTraversalTree(node.right, action);
 		}
 	}
 }

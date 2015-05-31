@@ -72,35 +72,18 @@ public class Octree {
 		}
 	}
 
-	public void DrawTree()
+	public void TraversalTree(TraversalDelegate action)
 	{
-		BoundsRenderer render = BoundsRenderer.Instance;
-		if (render == null) return;
-
-		Camera camera = Camera.main;
-		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-
-		TraversalTree(root, delegate(OctreeNode node)
-		{
-			render.AddBounds(node.bounds, Color.grey);
-			return true;
-
-			//if (node.bounds.IntersectRay(ray))
-			//{
-			//	render.AddBounds(node.bounds, Color.green);
-			//	return true;
-			//}
-			//return false;
-		});
+		RecursiveTraversalTree(root, action);
 	}
 
-	public void TraversalTree(OctreeNode node, TraversalDelegate action)
+	void RecursiveTraversalTree(OctreeNode node, TraversalDelegate action)
 	{
 		if (action(node))
 		{
 			foreach (var child in node.children)
 			{
-				TraversalTree(child, action);
+				RecursiveTraversalTree(child, action);
 			}
 		}
 	}
