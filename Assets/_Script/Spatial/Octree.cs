@@ -14,16 +14,16 @@ public class Octree {
 								 new Vector3(3f, 1f, 3f),
 								 new Vector3(3f, 3f, 3f)};
 
-	public class OctreeNode
+	public class Node
 	{
 		public Bounds bounds;
-		public List<OctreeNode> children = new List<OctreeNode>();
+		public List<Node> children = new List<Node>();
 		public List<Bounds> objs = new List<Bounds>();
 	}
 
-	OctreeNode root = new OctreeNode();
+	Node root = new Node();
 
-	public delegate bool TraversalDelegate(OctreeNode node);
+	public delegate bool TraversalDelegate(Node node);
 
 	public void BuildTree(List<Bounds> objList, Bounds bounds)
 	{
@@ -32,7 +32,7 @@ public class Octree {
 		RecursiveBuildTree(root);
 	}
 
-	void RecursiveBuildTree(OctreeNode node)
+	void RecursiveBuildTree(Node node)
 	{
 		List<Bounds> nodeObjs = new List<Bounds>();
 		List<Bounds>[] childObjs = new List<Bounds>[8];
@@ -64,7 +64,7 @@ public class Octree {
 		for (int i=0; i<8; ++i)
 		{
 			if (childObjs[i].Count <= 0) continue;
-			OctreeNode cNode = new OctreeNode();
+			Node cNode = new Node();
 			cNode.bounds = childBounds[i];
 			cNode.objs = childObjs[i];
 			node.children.Add(cNode);
@@ -77,7 +77,7 @@ public class Octree {
 		RecursiveTraversalTree(root, action);
 	}
 
-	void RecursiveTraversalTree(OctreeNode node, TraversalDelegate action)
+	void RecursiveTraversalTree(Node node, TraversalDelegate action)
 	{
 		if (action(node))
 		{
