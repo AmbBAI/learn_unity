@@ -24,18 +24,18 @@ public class SpatialSubdivision : MonoBehaviour {
 		kdtree.BuildTree(objs);
 		point = Vector3.zero;
 
-		//var meshList = meshRoot.GetComponentsInChildren<MeshFilter>();
-		//if (meshList.Length <= 0) return;
+		var meshList = meshRoot.GetComponentsInChildren<MeshFilter>();
+		if (meshList.Length <= 0) return;
 
-		//objBounds = meshList[0].mesh.bounds;
-		//foreach (var meshF in meshList)
-		//{
-		//	var boundsList = SpatialUtils.GetMeshTriangleBoundsList(meshF.mesh);
-		//	objBoundsList.AddRange(boundsList);
-		//	objBounds.Encapsulate(meshF.mesh.bounds);
-		//}
+		objBounds = meshList[0].mesh.bounds;
+		foreach (var meshF in meshList)
+		{
+			var boundsList = SpatialUtils.GetMeshTriangleBoundsList(meshF.mesh);
+			objBoundsList.AddRange(boundsList);
+			objBounds.Encapsulate(meshF.mesh.bounds);
+		}
 
-		//bvhtree.BuildTree(objBoundsList);
+		bvhtree.BuildTree(objBoundsList);
 	}
 
 	void Update()
@@ -47,17 +47,20 @@ public class SpatialSubdivision : MonoBehaviour {
 		if (Input.GetKey(KeyCode.Q)) point += Vector3.up * (moveScale * Time.deltaTime);
 		if (Input.GetKey(KeyCode.E)) point += Vector3.down * (moveScale * Time.deltaTime);
 
-		BoundsRenderer br = BoundsRenderer.Instance;
-		br.ClearBounds();
+		//BoundsRenderer br = BoundsRenderer.Instance;
+		//br.ClearBounds();
 
 		//Camera camera = Camera.main;
 		//Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 
 		//bvhtree.TraversalTree(delegate(BVHtree.Node node)
 		//{
-		//	//render.AddBounds(node.bounds, Color.grey);
-		//	//return true;
+		//	br.AddBounds(node.bounds, Color.grey);
+		//	return true;
+		//});
 
+		//bvhtree.TraversalTree(delegate(BVHtree.Node node)
+		//{
 		//	if (node.bounds.IntersectRay(ray))
 		//	{
 		//		br.AddBounds(node.bounds, Color.green);
@@ -66,24 +69,71 @@ public class SpatialSubdivision : MonoBehaviour {
 		//	return false;
 		//});
 
+		//var ret = kdtree.SearchNode(point);
+		//for (int i = 0; i < objs.Count; ++i)
+		//{
+		//	if (ret.obj == objs[i])
+		//	{
+		//		br.AddBounds(new Bounds(objs[i].position, Vector3.one), Color.green);
+		//	}
+		//	else
+		//	{
+		//		br.AddBounds(new Bounds(objs[i].position, Vector3.one), Color.grey);
+		//	}
+		//}
+
+		//br.AddBounds(new Bounds(point, Vector3.one), Color.red);
+
+		//br.UpdateMesh();
+
+
+	}
+
+	void OnDrawGizmos()
+	{
+		if (!Application.isPlaying) return;
+
 		var ret = kdtree.SearchNode(point);
 		for (int i = 0; i < objs.Count; ++i)
 		{
 			if (ret.obj == objs[i])
 			{
-				br.AddBounds(new Bounds(objs[i].position, Vector3.one), Color.green);
+				Gizmos.color = Color.green;
 			}
 			else
 			{
-				br.AddBounds(new Bounds(objs[i].position, Vector3.one), Color.grey);
+				Gizmos.color = Color.grey;
 			}
+			Gizmos.DrawWireCube(objs[i].position, Vector3.one);
 		}
 
-		br.AddBounds(new Bounds(point, Vector3.one), Color.red);
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireCube(point, Vector3.one);
+		Gizmos.DrawWireSphere(point, ret.dis);
 
-		br.UpdateMesh();
 
+		//Camera camera = Camera.main;
+		//Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+		//Gizmos.color = Color.red;
+		//Gizmos.DrawRay(ray);
 
+		//bvhtree.TraversalTree(delegate(BVHtree.Node node)
+		//{
+		//	Gizmos.color = Color.grey;
+		//	Gizmos.DrawWireCube(node.bounds.center, node.bounds.size);
+		//	return true;
+		//});
+
+		//bvhtree.TraversalTree(delegate(BVHtree.Node node)
+		//{
+		//	if (node.bounds.IntersectRay(ray))
+		//	{
+		//		Gizmos.color = Color.green;
+		//		Gizmos.DrawWireCube(node.bounds.center, node.bounds.size);
+		//		return true;
+		//	}
+		//	return false;
+		//});
 	}
 
 }

@@ -22,16 +22,14 @@ public class BoundsRenderer : MonoBehaviour {
 		public int vertexCount = 0;
 
 		public Mesh mesh = new Mesh();
-		public MeshFilter meshFilter = null;
 	}
 	private List<MeshData> datas = new List<MeshData>();
 
-	private GameObject boundsRendererPrefab = null;
+	public Material material;
 
 	void Awake()
 	{
 		Instance = this;
-		boundsRendererPrefab = Resources.Load<GameObject>("BoundsRenderer");
 	}
 
 	public void AddBounds(Bounds bounds, Color color)
@@ -77,28 +75,12 @@ public class BoundsRenderer : MonoBehaviour {
 	{
 		for (int i=0; i<datas.Count; ++i)
 		{
-			if (datas[i].meshFilter == null)
-			{
-				GameObject obj = GameObject.Instantiate(boundsRendererPrefab) as GameObject;
-				obj.SetActive(true);
-				obj.transform.parent = transform;
-				obj.transform.localPosition = Vector3.zero;
-				obj.transform.localRotation = Quaternion.identity;
-				obj.transform.localScale = Vector3.one;
-				datas[i].meshFilter = obj.GetComponent<MeshFilter>();
-				datas[i].meshFilter.mesh = datas[i].mesh;
-			}
-
-			if (datas[i].vertexCount <= 0)
-			{
-				datas[i].meshFilter.gameObject.SetActive(false);
-				continue;
-			}
+			if (datas[i].vertexCount <= 0) continue;
 
 			datas[i].mesh.vertices = datas[i].vertices;
 			datas[i].mesh.colors = datas[i].colors;
 			datas[i].mesh.SetIndices(datas[i].indices, MeshTopology.Lines, 0);
-			datas[i].meshFilter.gameObject.SetActive(true);
+			Graphics.DrawMesh(datas[i].mesh, transform.localToWorldMatrix, material, gameObject.layer);
 		}
 	}
 }

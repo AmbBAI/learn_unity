@@ -1,8 +1,10 @@
 ﻿Shader "Custom/cg_wire" {
 	Properties {}
 	SubShader {
-		Tags { "RenderType"="Opaque" }
+		Tags { "RenderType"="Transparent" "Queue"="Transparent" }
 		LOD 200
+		ZWrite off
+		ZTest Always
 		
 		Pass {
 			CGPROGRAM
