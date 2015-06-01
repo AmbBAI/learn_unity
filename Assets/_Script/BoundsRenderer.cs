@@ -37,10 +37,10 @@ public class BoundsRenderer : MonoBehaviour {
 	public void AddBounds(Bounds bounds, Color color)
 	{
 		MeshData meshData = null;
-		foreach (var data in datas)
+		for (int i = 0; i < datas.Count; ++i)
 		{
-			if (data.vertexCount >= vertexBuffSize) continue;
-			else meshData = data;
+			if (datas[i].vertexCount >= vertexBuffSize) continue;
+			else meshData = datas[i];
 		}
 		if (meshData == null)
 		{
@@ -48,15 +48,16 @@ public class BoundsRenderer : MonoBehaviour {
 			datas.Add(meshData);
 		}
 
-		List<Vector3> vertex = new List<Vector3>();
-		meshData.vertices[meshData.vertexCount + 0] = bounds.min;
-		meshData.vertices[meshData.vertexCount + 1].Set(bounds.min.x, bounds.min.y, bounds.max.z);
-		meshData.vertices[meshData.vertexCount + 2].Set(bounds.min.x, bounds.max.y, bounds.min.z);
-		meshData.vertices[meshData.vertexCount + 3].Set(bounds.min.x, bounds.max.y, bounds.max.z);
-		meshData.vertices[meshData.vertexCount + 4].Set(bounds.max.x, bounds.min.y, bounds.min.z);
-		meshData.vertices[meshData.vertexCount + 5].Set(bounds.max.x, bounds.min.y, bounds.max.z);
-		meshData.vertices[meshData.vertexCount + 6].Set(bounds.max.x, bounds.max.y, bounds.min.z);
-		meshData.vertices[meshData.vertexCount + 7] = bounds.max;
+		Vector3 min = bounds.min;
+		Vector3 max = bounds.max;
+		meshData.vertices[meshData.vertexCount + 0] = min;
+		meshData.vertices[meshData.vertexCount + 1].Set(min.x, min.y, max.z);
+		meshData.vertices[meshData.vertexCount + 2].Set(min.x, max.y, min.z);
+		meshData.vertices[meshData.vertexCount + 3].Set(min.x, max.y, max.z);
+		meshData.vertices[meshData.vertexCount + 4].Set(max.x, min.y, min.z);
+		meshData.vertices[meshData.vertexCount + 5].Set(max.x, min.y, max.z);
+		meshData.vertices[meshData.vertexCount + 6].Set(max.x, max.y, min.z);
+		meshData.vertices[meshData.vertexCount + 7] = max;
 
 		for (int i = 0; i < 8; ++i) meshData.colors[meshData.vertexCount + i] = color;
 		for (int i = 0; i < 24; ++i) meshData.indices[meshData.vertexCount * 3 + i] = gWireFrameIndex[i] + meshData.vertexCount;

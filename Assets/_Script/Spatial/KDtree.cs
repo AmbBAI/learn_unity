@@ -10,9 +10,11 @@ public class KDtreeObject
 
 public class KDtree<T> where T : KDtreeObject
 {
-	public class Node
+	class Node
 	{
-		public List<T> objs = null;
+		public int objIndex;
+		public int objCount;
+
 		public Axis splitAxis = Axis.None;
 		public float splitValue;
 		public Node left = null;
@@ -26,8 +28,24 @@ public class KDtree<T> where T : KDtreeObject
 	}
 
 	Node root = null;
+	List<T> objs = null;
 
-	public delegate bool TraversalDelegate(Node node);
+	public class XAxisComparer : IComparer<T>
+	{
+		public int Compare(T a, T b) { return a.position.x.CompareTo(b.position.x); }
+	}
+
+	public class YAxisComparer : IComparer<T>
+	{
+		public int Compare(T a, T b) { return a.position.y.CompareTo(b.position.y); }
+	}
+
+	public class ZAxisComparer : IComparer<T>
+	{
+		public int Compare(T a, T b) { return a.position.z.CompareTo(b.position.z); }
+	}
+
+	IComparer<T>[] comparer = { new XAxisComparer(), new YAxisComparer(), new ZAxisComparer() };
 
 	public void BuildTree(List<T> objList)
 	{
@@ -35,23 +53,25 @@ public class KDtree<T> where T : KDtreeObject
 		if (objList.Count <= 0) return;
 
 		root = new Node();
-		root.objs = objList;
+		root.objIndex = 0;
+		root.objCount = objList.Count;
+		//root.objs = new List<T>(objList);
+		objs = new List<T>(objList);
 		RecursiveBuildTree(root);
 	}
 
 	void RecursiveBuildTree(Node node)
 	{
-		if (node.objs.Count <= 0) return;
-		if (node.objs.Count <= 1) return;
+		if (node.objCount <= 1) return;
 
 		Vector3 avg = Vector3.zero;
-		foreach (var obj in node.objs) avg += obj.position;
-		avg /= node.objs.Count;
+		for (int i = 0; i < node.objCount; ++i) avg += objs[node.objIndex + i].position;
+		avg /= node.objCount;
 
 		Vector3 div = Vector3.zero;
-		foreach (var obj in node.objs)
+		for (int i = 0; i < node.objCount; ++i)
 		{
-			Vector3 diff = obj.position - avg;
+			Vector3 diff = objs[node.objIndex + i].position - avg;
 			diff.Scale(diff);
 			div += diff;
 		}
@@ -61,38 +81,45 @@ public class KDtree<T> where T : KDtreeObject
 		else if (div.y >= div.z) axis = Axis.Y;
 		else axis = Axis.Z;
 
-		node.objs.Sort((a, b) => a.position[(int)axis].CompareTo(b.position[(int)axis]));
+		objs.Sort(node.objIndex, node.objCount, comparer[(int)axis]);
 
-		float splitValue = node.objs[node.objs.Count / 2].position[(int)axis];
-		List<T> midObjs = new List<T>();
-		List<T> leftObjs = new List<T>();
-		List<T> rightObjs = new List<T>();
-		foreach (var obj in node.objs)
+		float splitValue = objs[node.objIndex + node.objCount / 2].position[(int)axis];
+		int leftIndex = node.objIndex, leftCount = 0;
+		int rightIndex = node.objIndex + node.objCount, rightCount = 0;
+		for (int i = 0; i < node.objCount; ++i)
 		{
-			if (obj.position[(int)axis] == splitValue)
-				midObjs.Add(obj);
-			if (obj.position[(int)axis] < splitValue)
-				leftObjs.Add(obj);
-			else rightObjs.Add(obj);
+			if (objs[i + node.objIndex].position[(int)axis] < splitValue)
+			{
+				leftCount = i + 1;
+			}
+			else if (objs[i + node.objIndex].position[(int)axis] > splitValue)
+			{
+				rightIndex = i + node.objIndex;
+				rightCount = node.objCount - i;
+				break;
+			}
 		}
 
-		node.objs = midObjs;
-		if (leftObjs.Count <= 0 && rightObjs.Count <= 0) return;
+		node.objIndex = leftIndex + leftCount;
+		node.objCount = node.objCount - leftCount - rightCount;
+		if (leftCount <= 0 && rightCount <= 0) return;
 		else
 		{
 			node.splitAxis = axis;
 			node.splitValue = splitValue;
-			if (leftObjs.Count > 0)
+			if (leftCount > 0)
 			{
 				node.left = new Node();
-				node.left.objs = leftObjs;
+				node.left.objIndex = leftIndex;
+				node.left.objCount = leftCount;
 				RecursiveBuildTree(node.left);
 			}
 			
-			if (rightObjs.Count > 0)
+			if (rightCount > 0)
 			{
 				node.right = new Node();
-				node.right.objs = rightObjs;
+				node.right.objIndex = rightIndex;
+				node.right.objCount = rightCount;
 				RecursiveBuildTree(node.right);
 			}
 		}
@@ -117,12 +144,12 @@ public class KDtree<T> where T : KDtreeObject
 
 	void SelectNode(Node node, Vector3 point, ref SearchResult ret)
 	{
-		foreach (var obj in node.objs)
+		for (int i = 0; i < node.objCount; ++i)
 		{
-			float dis = Vector3.Distance(obj.position, point);
+			float dis = Vector3.Distance(objs[node.objIndex + i].position, point);
 			if (ret.obj == null || dis < ret.dis)
 			{
-				ret.obj = obj;
+				ret.obj = objs[node.objIndex + i];
 				ret.dis = dis;
 			}
 		}
