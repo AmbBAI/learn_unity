@@ -123,7 +123,7 @@ Prefab:
       objectReference: {fileID: 2100000, guid: 1e79aca8422bbb5419d0810faf3940d7, type: 2}
     - target: {fileID: 100002, guid: ce859fac0867bdf4c947f4d0701befca, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ce859fac0867bdf4c947f4d0701befca, type: 3}
@@ -190,7 +190,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 500
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -228,7 +228,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &384005585
 Transform:
   m_ObjectHideFlags: 0
@@ -449,6 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050c4b4c8547e304eab2733b86a7974d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  material: {fileID: 0}
 --- !u!4 &1477553235
 Transform:
   m_ObjectHideFlags: 0
@@ -470,6 +471,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1478210909}
   - 114: {fileID: 1478210908}
+  - 114: {fileID: 1478210910}
   m_Layer: 0
   m_Name: SpatialSubdivision
   m_TagString: Untagged
@@ -489,7 +491,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRoot: {fileID: 384005584}
-  moveScale: 10
 --- !u!4 &1478210909
 Transform:
   m_ObjectHideFlags: 0
@@ -502,3 +503,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+--- !u!114 &1478210910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1478210907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43c1bc3047bcf1a41b458c521040317b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveScale: 10

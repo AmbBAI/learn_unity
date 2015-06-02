@@ -21,12 +21,13 @@ public class Octree {
 		public List<Bounds> objs = new List<Bounds>();
 	}
 
-	Node root = new Node();
+	Node root = null;
 
 	public delegate bool TraversalDelegate(Node node);
 
 	public void BuildTree(List<Bounds> objList, Bounds bounds)
 	{
+		root = new Node();
 		root.bounds = bounds;
 		root.objs = objList;
 		RecursiveBuildTree(root);
@@ -74,6 +75,7 @@ public class Octree {
 
 	public void TraversalTree(TraversalDelegate action)
 	{
+		if (root == null) return;
 		RecursiveTraversalTree(root, action);
 	}
 
