@@ -5,37 +5,96 @@ using System.Collections.Generic;
 
 public class BSPtreeObject
 {
-	public Mesh mesh = null;
-	public int triangle;
+	public Vector3[] vertices = new Vector3[3];
 
-}
-
-public class BSPtree {
-
-	class Node
-	{
-		public Node left = null;
-		public Node right = null;
-		public List<BSPtreeObject> objs = null;
-	}
-
-	Node root = null;
-
-	public void BuildTree(List<Mesh> meshes)
+	static public List<BSPtreeObject> InitWithMesh(List<Mesh> meshes)
 	{
 		List<BSPtreeObject> objs = new List<BSPtreeObject>();
 		foreach (var mesh in meshes)
 		{
 			int triangleCount = mesh.triangles.Length / 3;
-			for (int i=0; i<triangleCount; ++i)
+			for (int i = 0; i < triangleCount; ++i)
 			{
 				var bspObj = new BSPtreeObject();
-				bspObj.mesh = mesh;
-				bspObj.triangle = i;
+				int i0 = mesh.triangles[i * 3];
+				int i1 = mesh.triangles[i * 3 + 1];
+				int i2 = mesh.triangles[i * 3 + 2];
+				bspObj.vertices[0] = mesh.vertices[i0];
+				bspObj.vertices[1] = mesh.vertices[i1];
+				bspObj.vertices[2] = mesh.vertices[i2];
 				objs.Add(bspObj);
 			}
 		}
+		return objs;
+	}
 
+	static T CreateSubObject<T>(T obj, Vector3 a, Vector3 b, Vector3 c) where T : BSPtreeObject, new()
+	{
+		T subObj = new T();
+		obj.vertices[0] = obj.vertices[0] * a.x + obj.vertices[1] * a.y + obj.vertices[2] * a.z;
+		obj.vertices[1] = obj.vertices[0] * b.x + obj.vertices[1] * b.y + obj.vertices[2] * b.z;
+		obj.vertices[2] = obj.vertices[0] * c.x + obj.vertices[1] * c.y + obj.vertices[2] * c.z;
+		return subObj;
+	}
+
+	static public void Split<T>(Plane plane, T obj, ref List<T> front, ref List<T> back) where T : BSPtreeObject, new()
+	{
+		bool s0 = plane.GetSide(obj.vertices[0]);
+		bool s1 = plane.GetSide(obj.vertices[1]);
+		bool s2 = plane.GetSide(obj.vertices[2]);
+
+		if (s0 && s1 && s2) front.Add(obj);
+		else if (!(s0 || s1 || s2)) back.Add(obj);
+		else if (s0 && !(s1 || s2)) SplitObject(plane, obj, 0, 1, 2, ref front, ref back);
+		else if (s1 && !(s2 || s1)) SplitObject(plane, obj, 1, 2, 0, ref front, ref back);
+		else if (s2 && !(s0 || s1)) SplitObject(plane, obj, 2, 0, 1, ref front, ref back);
+		else if (s0 && s1 && !s2) SplitObject(plane, obj, 2, 0, 1, ref back, ref front);
+		else if (s2 && s0 && !s1) SplitObject(plane, obj, 1, 2, 0, ref back, ref front);
+		else if (s1 && s2 && !s0) SplitObject(plane, obj, 0, 1, 2, ref back, ref front);
+	}
+
+	static Vector3[] gTriCoord = {new Vector3(1f, 0f, 0f), new Vector3(0f, 1f, 0f), new Vector3(0f, 0f, 1f)};
+	static void SplitObject<T>(Plane plane, T obj, int i0, int i1, int i2, ref List<T> left, ref List<T> right) where T : BSPtreeObject, new()
+	{
+		float t1 = 0f, t2 = 0f;
+		SplitTriangle(plane, obj.vertices[i0], obj.vertices[i1], obj.vertices[i2], ref t1, ref t2);
+		Vector3 coord1 = gTriCoord[i0] * (1f - t1) + gTriCoord[i1] * t1;
+		Vector3 coord2 = gTriCoord[i0] * (1f - t2) + gTriCoord[i2] * t2;
+
+		left.Add(CreateSubObject(obj, gTriCoord[i0], coord1, coord2));
+		right.Add(CreateSubObject(obj, gTriCoord[i1], coord2, coord1));
+		right.Add(CreateSubObject(obj, gTriCoord[i1], gTriCoord[i2], coord2));
+	}
+
+	static bool SplitTriangle(Plane plane, Vector3 v0, Vector3 v1, Vector3 v2, ref float t1, ref float t2)
+	{
+		t1 = SplitSegment(plane, v0, v1);
+		if (t1 < 0f || t1 > 1f) return false;
+		t2 = SplitSegment(plane, v0, v2);
+		if (t2 < 0f || t2 > 1f) return false;
+		return true;
+	}
+
+	static float SplitSegment(Plane plane, Vector3 v0, Vector3 v1)
+	{
+		return (plane.distance - Vector3.Dot(plane.normal, v0)) / Vector3.Dot(plane.normal, v1 - v0);
+	}
+}
+
+public class BSPtree <T> where T : BSPtreeObject, new()
+{
+
+	class Node
+	{
+		public Node left = null;
+		public Node right = null;
+		public List<T> objs = null;
+	}
+
+	Node root = null;
+
+	public void BuildTree(List<T> objs)
+	{
 		root = new Node();
 		root.objs = objs;
 		RecursiveBuildTree(root);
@@ -46,70 +105,43 @@ public class BSPtree {
 		var splitObj = SelectSplitObject(node.objs);
 		Plane splitPlane = CalcSplitPlane(splitObj);
 
-		List<BSPtreeObject> leftObjs = new List<BSPtreeObject>();
-		List<BSPtreeObject> rightObjs = new List<BSPtreeObject>();
+		List<T> front = new List<T>();
+		List<T> back = new List<T>();
 		foreach (var obj in node.objs)
 		{
 			if (splitObj != obj)
 			{
-				int splitRet = CheckSide(splitPlane, obj);
-				if (splitRet >= 0) leftObjs.Add(obj);
-				if (splitRet <= 0) rightObjs.Add(obj);
+				BSPtreeObject.Split(splitPlane, obj, ref front, ref back);
 			}
 		}
 
 		node.objs.Clear();
 		node.objs.Add(splitObj);
 
-		if (leftObjs.Count > 0)
+		if (front.Count > 0)
 		{
 			node.left = new Node();
-			node.objs = leftObjs;
+			node.objs = front;
 			RecursiveBuildTree(node.left);
 		}
-		
-		if (rightObjs.Count > 0)
+
+		if (back.Count > 0)
 		{
 			node.right = new Node();
-			node.objs = rightObjs;
+			node.objs = back;
 			RecursiveBuildTree(node.right);
 		}
 	}
 
-	BSPtreeObject SelectSplitObject(List<BSPtreeObject> objs)
+	T SelectSplitObject(List<T> objs)
 	{
 		return objs[UnityEngine.Random.Range(0, objs.Count)];
 	}
 
-	Plane CalcSplitPlane(BSPtreeObject obj)
+	Plane CalcSplitPlane(T obj)
 	{
-		int i0 = obj.mesh.triangles[obj.triangle * 3];
-		int i1 = obj.mesh.triangles[obj.triangle * 3 + 1];
-		int i2 = obj.mesh.triangles[obj.triangle * 3 + 2];
-
-		Vector3 v0 = obj.mesh.vertices[i0];
-		Vector3 v1 = obj.mesh.vertices[i1];
-		Vector3 v2 = obj.mesh.vertices[i2];
-
-		return new Plane(v0, v1, v2);
+		return new Plane(obj.vertices[0], obj.vertices[1], obj.vertices[2]);
 	}
 
-	int CheckSide(Plane plane, BSPtreeObject obj)
-	{
-		int i0 = obj.mesh.triangles[obj.triangle * 3];
-		int i1 = obj.mesh.triangles[obj.triangle * 3 + 1];
-		int i2 = obj.mesh.triangles[obj.triangle * 3 + 2];
 
-		Vector3 v0 = obj.mesh.vertices[i0];
-		Vector3 v1 = obj.mesh.vertices[i1];
-		Vector3 v2 = obj.mesh.vertices[i2];
-
-		bool s0 = plane.GetSide(v0);
-		bool s1 = plane.GetSide(v1);
-		bool s2 = plane.GetSide(v2);
-
-		if (s0 && s1 && s2) return 1;
-		if (!(s0 || s1 || s2)) return -1;
-		return 0;
-	}
 }
