@@ -34,7 +34,6 @@ public class BSPtreeObject
 		subObj.vertices[0] = obj.vertices[0] * a.x + obj.vertices[1] * a.y + obj.vertices[2] * a.z;
 		subObj.vertices[1] = obj.vertices[0] * b.x + obj.vertices[1] * b.y + obj.vertices[2] * b.z;
 		subObj.vertices[2] = obj.vertices[0] * c.x + obj.vertices[1] * c.y + obj.vertices[2] * c.z;
-		//Debug.Log(obj.vertices[0] + ",," + obj.vertices[1] + ",," + obj.vertices[2]);
 		return subObj;
 	}
 
@@ -47,7 +46,7 @@ public class BSPtreeObject
 		if (s0 && s1 && s2) front.Add(obj);
 		else if (!(s0 || s1 || s2)) back.Add(obj);
 		else if (s0 && !(s1 || s2)) SplitObject(plane, obj, 0, 1, 2, ref front, ref back);
-		else if (s1 && !(s2 || s1)) SplitObject(plane, obj, 1, 2, 0, ref front, ref back);
+		else if (s1 && !(s2 || s0)) SplitObject(plane, obj, 1, 2, 0, ref front, ref back);
 		else if (s2 && !(s0 || s1)) SplitObject(plane, obj, 2, 0, 1, ref front, ref back);
 		else if (s0 && s1 && !s2) SplitObject(plane, obj, 2, 0, 1, ref back, ref front);
 		else if (s2 && s0 && !s1) SplitObject(plane, obj, 1, 2, 0, ref back, ref front);
@@ -124,9 +123,8 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 		}
 
 		node.objs.Clear();
-		node.objs.Add(splitObj);
+		node.objs = mid;
 
-		//Debug.Log(front.Count + "|" + back.Count);
 		if (front.Count > 0)
 		{
 			node.left = new Node();
@@ -144,8 +142,8 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 
 	T SelectSplitObject(List<T> objs)
 	{
-		int idx = UnityEngine.Random.Range(0, objs.Count);
-		return objs[idx];
+		//int idx = UnityEngine.Random.Range(0, objs.Count);
+		return objs[0];
 	}
 
 	Plane CalcSplitPlane(T obj)
@@ -156,6 +154,7 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 	public void TraverseTree()
 	{
 		if (root == null) return;
+		UnityEngine.Random.seed = 0;
 		RecursiveTraverseTree(root);
 	}
 
@@ -166,6 +165,7 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 			RecursiveTraverseTree(node.left);
 		}
 
+		Gizmos.color = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
 		foreach (var obj in node.objs)
 		{
 			Gizmos.DrawLine(obj.vertices[0], obj.vertices[1]);

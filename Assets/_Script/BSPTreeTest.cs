@@ -21,7 +21,6 @@ public class BSPTreeTest : MonoBehaviour {
 		}
 
 		objs = BSPtreeObject.InitWithMesh(meshes);
-		Debug.Log(objs);
 		bsptree.BuildTree(objs);
 	}
 
