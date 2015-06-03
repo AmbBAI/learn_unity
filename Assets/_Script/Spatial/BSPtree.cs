@@ -31,9 +31,10 @@ public class BSPtreeObject
 	static T CreateSubObject<T>(T obj, Vector3 a, Vector3 b, Vector3 c) where T : BSPtreeObject, new()
 	{
 		T subObj = new T();
-		obj.vertices[0] = obj.vertices[0] * a.x + obj.vertices[1] * a.y + obj.vertices[2] * a.z;
-		obj.vertices[1] = obj.vertices[0] * b.x + obj.vertices[1] * b.y + obj.vertices[2] * b.z;
-		obj.vertices[2] = obj.vertices[0] * c.x + obj.vertices[1] * c.y + obj.vertices[2] * c.z;
+		subObj.vertices[0] = obj.vertices[0] * a.x + obj.vertices[1] * a.y + obj.vertices[2] * a.z;
+		subObj.vertices[1] = obj.vertices[0] * b.x + obj.vertices[1] * b.y + obj.vertices[2] * b.z;
+		subObj.vertices[2] = obj.vertices[0] * c.x + obj.vertices[1] * c.y + obj.vertices[2] * c.z;
+		//Debug.Log(obj.vertices[0] + ",," + obj.vertices[1] + ",," + obj.vertices[2]);
 		return subObj;
 	}
 
@@ -96,46 +97,55 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 	public void BuildTree(List<T> objs)
 	{
 		root = new Node();
-		root.objs = objs;
+		root.objs = new List<T>(objs);
 		RecursiveBuildTree(root);
 	}
 
 	void RecursiveBuildTree(Node node)
 	{
+		if (node.objs.Count <= 1) return;
+
 		var splitObj = SelectSplitObject(node.objs);
 		Plane splitPlane = CalcSplitPlane(splitObj);
 
+		List<T> mid = new List<T>() { splitObj };
 		List<T> front = new List<T>();
 		List<T> back = new List<T>();
 		foreach (var obj in node.objs)
 		{
 			if (splitObj != obj)
 			{
-				BSPtreeObject.Split(splitPlane, obj, ref front, ref back);
+				Plane plane = CalcSplitPlane(obj);
+				if (plane.normal == splitPlane.normal && Mathf.Approximately(plane.distance, splitPlane.distance))
+					mid.Add(obj);
+				else
+					BSPtreeObject.Split(splitPlane, obj, ref front, ref back);
 			}
 		}
 
 		node.objs.Clear();
 		node.objs.Add(splitObj);
 
+		//Debug.Log(front.Count + "|" + back.Count);
 		if (front.Count > 0)
 		{
 			node.left = new Node();
-			node.objs = front;
+			node.left.objs = front;
 			RecursiveBuildTree(node.left);
 		}
 
 		if (back.Count > 0)
 		{
 			node.right = new Node();
-			node.objs = back;
+			node.right.objs = back;
 			RecursiveBuildTree(node.right);
 		}
 	}
 
 	T SelectSplitObject(List<T> objs)
 	{
-		return objs[UnityEngine.Random.Range(0, objs.Count)];
+		int idx = UnityEngine.Random.Range(0, objs.Count);
+		return objs[idx];
 	}
 
 	Plane CalcSplitPlane(T obj)
@@ -143,5 +153,29 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 		return new Plane(obj.vertices[0], obj.vertices[1], obj.vertices[2]);
 	}
 
+	public void TraverseTree()
+	{
+		if (root == null) return;
+		RecursiveTraverseTree(root);
+	}
 
+	void RecursiveTraverseTree(Node node)
+	{
+		if (node.left != null)
+		{
+			RecursiveTraverseTree(node.left);
+		}
+
+		foreach (var obj in node.objs)
+		{
+			Gizmos.DrawLine(obj.vertices[0], obj.vertices[1]);
+			Gizmos.DrawLine(obj.vertices[1], obj.vertices[2]);
+			Gizmos.DrawLine(obj.vertices[2], obj.vertices[0]);
+		}
+
+		if (node.right != null)
+		{
+			RecursiveTraverseTree(node.right);
+		}
+	}
 }

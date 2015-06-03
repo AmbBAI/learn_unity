@@ -31,6 +31,7 @@ public class KDTreeTest : MonoBehaviour {
 	void OnDrawGizmos()
 	{
 		if (!Application.isPlaying) return;
+		if (!enabled) return;
 
 		var ret = kdtree.SearchNode(point);
 		for (int i = 0; i < objs.Count; ++i)

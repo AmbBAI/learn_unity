@@ -30,6 +30,9 @@ public class SpatialSubdivision : MonoBehaviour {
 
 	void OnDrawGizmos()
 	{
+		if (!Application.isPlaying) return;
+		if (!enabled) return;
+
 		Camera camera = Camera.main;
 		Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 		Gizmos.color = Color.red;
