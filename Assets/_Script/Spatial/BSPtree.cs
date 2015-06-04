@@ -221,29 +221,31 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 		return retPlane;
 	}
 
-	public void TraverseTree()
+	public int TraverseTree(Action<T> action)
 	{
-		if (root == null) return;
-		RecursiveTraverseTree(root);
+		if (root == null) return 0;
+		return RecursiveTraverseTree(root, action);
 	}
 
-	void RecursiveTraverseTree(Node node)
+	int RecursiveTraverseTree(Node node, Action<T> action)
 	{
-		if (node.left != null)
+		int objCount = 0;
+		if (node.right != null)
 		{
-			RecursiveTraverseTree(node.left);
+			objCount += RecursiveTraverseTree(node.right, action);
 		}
 
 		foreach (var obj in node.objs)
 		{
-			Gizmos.DrawLine(obj.vertices[0], obj.vertices[1]);
-			Gizmos.DrawLine(obj.vertices[1], obj.vertices[2]);
-			Gizmos.DrawLine(obj.vertices[2], obj.vertices[0]);
+			if (action != null) action(obj);
+			objCount += 1;
 		}
 
-		if (node.right != null)
+		if (node.left != null)
 		{
-			RecursiveTraverseTree(node.right);
+			objCount += RecursiveTraverseTree(node.left, action);
 		}
+
+		return objCount;
 	}
 }
