@@ -10,6 +10,12 @@ public class BSPTreeTest : MonoBehaviour {
 	List<BSPtreeObject> objs;
 	BSPtree<BSPtreeObject> bsptree = new BSPtree<BSPtreeObject>();
 
+	Dictionary<Vector3, int> verticesHash = new Dictionary<Vector3, int>();
+	int[] triangles = null;
+	Mesh mesh = null;
+
+	bool isInit = false;
+
 	void Start()
 	{
 		var meshList = meshRoot.GetComponentsInChildren<MeshFilter>();
@@ -25,36 +31,59 @@ public class BSPTreeTest : MonoBehaviour {
 		objs = BSPtreeObject.InitWithMesh(meshes);
 		bsptree.BuildTree(objs);
 
-		List<Vector3> vertices = new List<Vector3>();
-		List<int> triangles = new List<int>();
-		Dictionary<int, int> verticesHash = new Dictionary<int, int>();
-
-		bsptree.TraverseTree(delegate(BSPtreeObject obj)
-		{
-			for (int i = 0; i < 3; ++i)
-			{
-				int index = -1;
-				int hashCode = obj.vertices[i].GetHashCode();
-				if (verticesHash.ContainsKey(hashCode))
-				{
-					index = verticesHash[hashCode];
-				}
-				else
-				{
-					index = vertices.Count;
-					vertices.Add(obj.vertices[i]);
-					verticesHash[hashCode] = index;
-				}
-				triangles.Add(index);
-			}
-		});
-
-		Mesh mesh = new Mesh();
-		mesh.vertices = vertices.ToArray();
-		mesh.triangles = triangles.ToArray();
-
+		mesh = new Mesh();
 		MeshFilter outMeshFliter = GetComponent<MeshFilter>();
 		outMeshFliter.mesh = mesh;
+	}
+
+	void Update()
+	{
+		Matrix4x4 mat = transform.worldToLocalMatrix;
+		Vector3 pos = mat.MultiplyPoint3x4(Camera.main.transform.position);
+
+		if (!isInit)
+		{
+			List<Vector3> vtxList = new List<Vector3>();
+			List<int> triList = new List<int>();
+			bsptree.TraverseTree(pos, delegate(BSPtreeObject obj)
+			{
+				for (int i = 0; i < 3; ++i)
+				{
+					int index = -1;
+					if (verticesHash.ContainsKey(obj.vertices[i]))
+					{
+						index = verticesHash[obj.vertices[i]];
+					}
+					else
+					{
+						index = vtxList.Count;
+						vtxList.Add(obj.vertices[i]);
+						verticesHash[obj.vertices[i]] = index;
+					}
+					triList.Add(index);
+				}
+			});
+
+			mesh.vertices = vtxList.ToArray();
+			mesh.triangles = triangles = triList.ToArray();
+
+			isInit = true;
+		}
+		else
+		{
+			int triIndex = 0;
+			bsptree.TraverseTree(pos, delegate(BSPtreeObject obj)
+			{
+				for (int i = 0; i < 3; ++i)
+				{
+					int index = verticesHash[obj.vertices[i]];
+					triangles[triIndex] = index;
+					++ triIndex;
+				}
+			});
+
+			mesh.triangles = triangles;
+		}
 	}
 
 	//void OnDrawGizmos()

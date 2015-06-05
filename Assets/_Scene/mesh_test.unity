@@ -532,6 +532,7 @@ GameObject:
   - 33: {fileID: 1433777017}
   - 23: {fileID: 1433777016}
   - 114: {fileID: 1433777015}
+  - 114: {fileID: 1433777014}
   m_Layer: 0
   m_Name: BSPtreeTest
   m_TagString: Untagged
@@ -539,6 +540,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1433777014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1433777013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd740ae2bdba6fe42abf6e02b75551c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rot: 10
 --- !u!114 &1433777015
 MonoBehaviour:
   m_ObjectHideFlags: 0

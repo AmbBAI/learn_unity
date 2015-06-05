@@ -130,6 +130,7 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 
 	class Node
 	{
+		public Plane plane;
 		public Node left = null;
 		public Node right = null;
 		public List<T> objs = null;
@@ -161,6 +162,7 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 				BSPtreeObject.Split(splitPlane, obj, ref frontObjs, ref backObjs);
 		}
 
+		node.plane = splitPlane;
 		node.objs = nodeObjs;
 
 		if (frontObjs.Count > 0)
@@ -221,31 +223,34 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 		return retPlane;
 	}
 
-	public int TraverseTree(Action<T> action)
+	public void TraverseTree(Vector3 point, Action<T> action)
 	{
-		if (root == null) return 0;
-		return RecursiveTraverseTree(root, action);
+		if (root == null) return;
+		RecursiveTraverseTree(root, point, action);
 	}
 
-	int RecursiveTraverseTree(Node node, Action<T> action)
+	void RecursiveTraverseTree(Node node, Vector3 point, Action<T> action)
 	{
-		int objCount = 0;
-		if (node.right != null)
+		bool side = BSPtreeObject.SideToPlane(node.plane, point);
+		Node a = node.right, b = node.left;
+		if (!side) { a = node.left; b = node.right; }
+
+		if (a != null)
 		{
-			objCount += RecursiveTraverseTree(node.right, action);
+			RecursiveTraverseTree(a, point, action);
 		}
 
-		foreach (var obj in node.objs)
+		if (action != null)
 		{
-			if (action != null) action(obj);
-			objCount += 1;
+			foreach (var obj in node.objs)
+			{
+				action(obj);
+			}
 		}
 
-		if (node.left != null)
+		if (b != null)
 		{
-			objCount += RecursiveTraverseTree(node.left, action);
+			RecursiveTraverseTree(b, point, action);
 		}
-
-		return objCount;
 	}
 }
