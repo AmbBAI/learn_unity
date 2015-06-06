@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -122,6 +123,29 @@ public class BSPtreeObject
 	static public bool PlaneCoincide(Plane a, Plane b)
 	{
 		return a.normal == b.normal && Mathf.Approximately(a.distance, b.distance);
+	}
+
+	public virtual void Write(BinaryWriter writer)
+	{
+		for (int i=0; i<3; ++i)
+		{
+			writer.Write(vertices[i].x);
+			writer.Write(vertices[i].y);
+			writer.Write(vertices[i].z);
+		}
+		writer.Flush();
+	}
+
+	static public T Read<T>(BinaryReader reader) where T : BSPtreeObject, new()
+	{
+		T obj = new T();
+		for (int i = 0; i < 3; ++i)
+		{
+			obj.vertices[i].x = reader.ReadSingle();
+			obj.vertices[i].y = reader.ReadSingle();
+			obj.vertices[i].z = reader.ReadSingle();
+		}
+		return obj;
 	}
 }
 
@@ -253,4 +277,93 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 			RecursiveTraverseTree(b, point, action);
 		}
 	}
+
+	public void SaveToFile(string name)
+	{
+		if (root == null) return;
+
+		string path = string.Format("Assets/Resources/{0}.bsp", name);
+		FileStream fsw = File.Create(path);
+
+		using(BinaryWriter writer = new BinaryWriter(fsw))
+		{
+			Write(writer);
+			writer.Close();
+		}
+		
+		fsw.Close();
+	}
+
+	public void LoadFromFile(string name)
+	{
+		string path = string.Format("Assets/Resources/{0}.bsp", name);
+		FileStream fsw = File.OpenRead(path);
+
+		using(BinaryReader reader = new BinaryReader(fsw))
+		{
+			Read(reader);
+			reader.Close();
+		}
+
+		fsw.Close();
+	}
+
+	public void Write(BinaryWriter writer)
+	{
+		RecursiveWriteBytes(root, writer);
+	}
+
+	public void Read(BinaryReader reader)
+	{
+		root = RecursiveReadBytes(reader);
+	}
+
+	Node RecursiveReadBytes(BinaryReader reader)
+	{
+		if (reader.ReadBoolean())
+		{
+			Node node = new Node();
+			Vector3 normal = new Vector3();
+			normal.x = reader.ReadSingle();
+			normal.y = reader.ReadSingle();
+			normal.z = reader.ReadSingle();
+			float distance = reader.ReadSingle();
+
+			node.plane = new Plane(normal, distance);
+			node.left = RecursiveReadBytes(reader);
+			node.right = RecursiveReadBytes(reader);
+
+			node.objs = new List<T>();
+			int objCount = reader.ReadInt32();
+			for (int i=0; i<objCount; ++i)
+			{
+				node.objs.Add(BSPtreeObject.Read<T>(reader));
+			}
+			return node;
+		}
+		else return null;
+	}
+
+	void RecursiveWriteBytes(Node node, BinaryWriter writer)
+	{
+		writer.Write(true);
+		Vector3 n = node.plane.normal;
+		float d = node.plane.distance;
+		writer.Write(n.x);
+		writer.Write(n.y);
+		writer.Write(n.z);
+		writer.Write(d);
+
+		if (node.left != null) RecursiveWriteBytes(node.left, writer);
+		else writer.Write(false);
+		if (node.right != null) RecursiveWriteBytes(node.right, writer);
+		else writer.Write(false);
+
+		writer.Write(node.objs.Count);
+		foreach (var obj in node.objs)
+		{
+			obj.Write(writer);
+		}
+	}
+
 }

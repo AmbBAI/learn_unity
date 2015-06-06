@@ -18,18 +18,21 @@ public class BSPTreeTest : MonoBehaviour {
 
 	void Start()
 	{
-		var meshList = meshRoot.GetComponentsInChildren<MeshFilter>();
-		if (meshList.Length <= 0) return;
-		meshRoot.SetActive(false);
+		//var meshList = meshRoot.GetComponentsInChildren<MeshFilter>();
+		//if (meshList.Length <= 0) return;
+		//meshRoot.SetActive(false);
 
-		List<Mesh> meshes = new List<Mesh>();
-		foreach (var meshFliter in meshList)
-		{
-			meshes.Add(meshFliter.mesh);
-		}
+		//List<Mesh> meshes = new List<Mesh>();
+		//foreach (var meshFliter in meshList)
+		//{
+		//	meshes.Add(meshFliter.mesh);
+		//}
 
-		objs = BSPtreeObject.InitWithMesh(meshes);
-		bsptree.BuildTree(objs);
+		//objs = BSPtreeObject.InitWithMesh(meshes);
+		//bsptree.BuildTree(objs);
+		//bsptree.SaveToFile("knot");
+
+		bsptree.LoadFromFile("knot");
 
 		mesh = new Mesh();
 		MeshFilter outMeshFliter = GetComponent<MeshFilter>();
