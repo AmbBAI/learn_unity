@@ -10,7 +10,9 @@ public class BSPtreeObject
 
 	public virtual Plane GetPlane()
 	{
-		return new Plane(vertices[0], vertices[1], vertices[2]);
+		Vector3 normal = Vector3.Cross(vertices[1] - vertices[0], vertices[2] - vertices[0]);
+		normal.Normalize();
+		return new Plane(normal, Vector3.Dot(vertices[0], normal));
 	}
 
 	static public List<BSPtreeObject> InitWithMesh(List<Mesh> meshes)
@@ -63,29 +65,44 @@ public class BSPtreeObject
 	static void SplitObject<T>(Plane plane, T obj, int i0, int i1, int i2, ref List<T> left, ref List<T> right) where T : BSPtreeObject, new()
 	{
 		float t1 = 0f, t2 = 0f;
-		if (SplitTriangle (plane, obj.vertices [i0], obj.vertices [i1], obj.vertices [i2], ref t1, ref t2))
-		{
-			if (Mathf.Approximately(t1, 0f) || Mathf.Approximately(t2, 0f)) { right.Add(obj); return; }
-			if (Mathf.Approximately(t1, 1f) && Mathf.Approximately(t2, 1f)) { left.Add(obj); return; }
-
-			Vector3 coord1 = gTriCoord[i0] * (1f - t1) + gTriCoord[i1] * t1;
-			Vector3 coord2 = gTriCoord[i0] * (1f - t2) + gTriCoord[i2] * t2;
-
-			left.Add(CreateSubObject(obj, gTriCoord[i0], coord1, coord2));
-			right.Add(CreateSubObject(obj, gTriCoord[i1], coord2, coord1));
-			right.Add(CreateSubObject(obj, gTriCoord[i1], gTriCoord[i2], coord2));
-		}
-		else
+		if (!SplitTriangle (plane, obj.vertices[i0], obj.vertices[i1], obj.vertices[i2], ref t1, ref t2))
 		{
 			Debug.LogWarning(string.Format("!!! t1 {0} ,, t2 {1}", t1, t2));
 		}
+
+		t1 = Mathf.Clamp01(t1);
+		t2 = Mathf.Clamp01(t2);
+
+		if (Mathf.Approximately(t1, 0f) || Mathf.Approximately(t2, 0f)) { right.Add(obj); return; }
+		if (Mathf.Approximately(t1, 1f) && Mathf.Approximately(t2, 1f)) { left.Add(obj); return; }
+
+		Vector3 coord1 = gTriCoord[i0] * (1f - t1) + gTriCoord[i1] * t1;
+		Vector3 coord2 = gTriCoord[i0] * (1f - t2) + gTriCoord[i2] * t2;
+
+		if (Mathf.Approximately(t1, 1f))
+		{
+			left.Add(CreateSubObject(obj, gTriCoord[i0], gTriCoord[i1], coord2));
+			right.Add(CreateSubObject(obj, gTriCoord[i1], gTriCoord[i2], coord2));
+			return;
+		}
+		if (Mathf.Approximately(t2, 1f))
+		{
+			left.Add(CreateSubObject(obj, gTriCoord[i0], coord1, gTriCoord[i2]));
+			right.Add(CreateSubObject(obj, gTriCoord[i1], gTriCoord[i2], coord1));
+			return;
+		}
+
+		left.Add(CreateSubObject(obj, gTriCoord[i0], coord1, coord2));
+		right.Add(CreateSubObject(obj, gTriCoord[i1], coord2, coord1));
+		right.Add(CreateSubObject(obj, gTriCoord[i1], gTriCoord[i2], coord2));
+
 	}
 
 	static bool SplitTriangle(Plane plane, Vector3 v0, Vector3 v1, Vector3 v2, ref float t1, ref float t2)
 	{
 		t1 = SplitSegment(plane, v0, v1);
-		if (t1 < 0f || t1 > 1f) return false;
 		t2 = SplitSegment(plane, v0, v2);
+		if (t1 < 0f || t1 > 1f) return false;
 		if (t2 < 0f || t2 > 1f) return false;
 		return true;
 	}
@@ -117,7 +134,7 @@ public class BSPtreeObject
 
 	static public bool SideToPlane(Plane plane, Vector3 position)
 	{
-		return Vector3.Dot(plane.normal, position) >= plane.distance;
+		return plane.distance - Vector3.Dot(plane.normal, position) <= Mathf.Epsilon;
 	}
 
 	static public bool PlaneCoincide(Plane a, Plane b)
@@ -166,10 +183,10 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 	{
 		root = new Node();
 		root.objs = new List<T>(objs);
-		RecursiveBuildTree(root);
+		RecursiveBuildTree(root, 0);
 	}
 
-	void RecursiveBuildTree(Node node)
+	void RecursiveBuildTree(Node node, int dep)
 	{
 		if (node.objs.Count <= 1) return;
 
@@ -188,19 +205,22 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 
 		node.plane = splitPlane;
 		node.objs = nodeObjs;
+		//Debug.Log(dep + "::" + nodeObjs.Count + ",," + frontObjs.Count + ",," + backObjs.Count);
 
 		if (frontObjs.Count > 0)
 		{
 			node.left = new Node();
 			node.left.objs = frontObjs;
-			RecursiveBuildTree(node.left);
+			//if (dep < 5) 
+				RecursiveBuildTree(node.left, dep + 1);
 		}
 
 		if (backObjs.Count > 0)
 		{
 			node.right = new Node();
 			node.right.objs = backObjs;
-			RecursiveBuildTree(node.right);
+			//if (dep < 5) 
+				RecursiveBuildTree(node.right, dep + 1);
 		}
 	}
 
@@ -223,7 +243,7 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 				{
 					switch(BSPtreeObject.UbietyToPlane(plane, obj))
 					{
-						case BSPtreeObject.UbietyResult.Coincident:
+						case BSPtreeObject.UbietyResult.Cross:
 							splitCount += 1;
 							break;
 						case BSPtreeObject.UbietyResult.Front:
@@ -237,6 +257,7 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 			}
 
 			float score = k * splitCount + (1f - k) * Mathf.Abs(frontCount - backCount);
+			//Debug.Log(splitCount + ",," + frontCount + ",," + backCount);
 			if (score < bestScore)
 			{
 				retPlane = plane;
@@ -275,6 +296,28 @@ public class BSPtree <T> where T : BSPtreeObject, new()
 		if (b != null)
 		{
 			RecursiveTraverseTree(b, point, action);
+		}
+	}
+
+	public bool IntersectPoint(Vector3 point)
+	{
+		if (root == null) return false;
+		return RecursiveIntersectPoint(root, point);
+	}
+
+	bool RecursiveIntersectPoint(Node node, Vector3 point)
+	{
+		bool side = BSPtreeObject.SideToPlane(node.plane, point);
+
+		if (side)
+		{
+			if (node.left != null) return RecursiveIntersectPoint(node.left, point);
+			return false;
+		}
+		else
+		{
+			if (node.right != null) return RecursiveIntersectPoint(node.right, point);
+			return true;
 		}
 	}
 
