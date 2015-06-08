@@ -13,7 +13,7 @@ public class KDTreeTest : MonoBehaviour {
 	void Start()
 	{
 		Bounds bounds = new Bounds(new Vector3(0f, 0f, 0f), new Vector3(1000f, 1000f, 0f));
-		objs = SpatialUtils.CreateKDTreeObjectPool(bounds, 10000);
+		objs = KDtreeObject.CreateKDTreeObjectPool(bounds, 10000);
 
 		kdtree.BuildTree(objs);
 		point = Vector3.zero;

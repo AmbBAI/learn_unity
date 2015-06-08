@@ -6,6 +6,24 @@ using System.Collections.Generic;
 public class KDtreeObject
 {
 	public Vector3 position;
+
+	static public List<KDtreeObject> CreateKDTreeObjectPool(Bounds bounds, int count)
+	{
+		List<KDtreeObject> objs = new List<KDtreeObject>(count);
+
+		for (int i = 0; i < count; ++i)
+		{
+			KDtreeObject obj = new KDtreeObject();
+			obj.position = new Vector3(
+				UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
+				UnityEngine.Random.Range(bounds.min.y, bounds.max.y),
+				UnityEngine.Random.Range(bounds.min.z, bounds.max.z)
+			);
+			objs.Add(obj);
+		}
+
+		return objs;
+	}
 }
 
 public class KDtree<T> where T : KDtreeObject

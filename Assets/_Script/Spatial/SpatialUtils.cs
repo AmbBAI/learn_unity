@@ -40,21 +40,18 @@ public class SpatialUtils {
 		return ret;
 	}
 
-	static public List<KDtreeObject> CreateKDTreeObjectPool(Bounds bounds, int count)
+	static public float SplitSegment(Plane plane, Vector3 v0, Vector3 v1)
 	{
-		List<KDtreeObject> objs = new List<KDtreeObject>(count);
+		return (plane.distance - Vector3.Dot(plane.normal, v0)) / Vector3.Dot(plane.normal, v1 - v0);
+	}
 
-		for (int i = 0; i < count; ++i)
-		{
-			KDtreeObject obj = new KDtreeObject();
-			obj.position = new Vector3(
-				UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
-				UnityEngine.Random.Range(bounds.min.y, bounds.max.y),
-				UnityEngine.Random.Range(bounds.min.z, bounds.max.z)
-			);
-			objs.Add(obj);
-		}
+	static public bool SideToPlane(Plane plane, Vector3 position)
+	{
+		return plane.distance - Vector3.Dot(plane.normal, position) <= Mathf.Epsilon;
+	}
 
-		return objs;
+	static public bool PlaneCoincide(Plane a, Plane b)
+	{
+		return a.normal == b.normal && Mathf.Approximately(a.distance, b.distance);
 	}
 }
