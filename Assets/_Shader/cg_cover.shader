@@ -3,11 +3,10 @@
 		_RimColor ("Rim Color", Color) = (1.,1.,1.,1.)
 	}
 	SubShader {
-
 		LOD 200
 		
 		Pass {
-			Tags {"RenderType"="Transparent" "Queue"="Transparent"}
+			Tags { "RenderType"="Transparent" "Queue" = "Transparent" }
 			ZWrite off
 			ZTest Greater
 			Blend SrcAlpha OneMinusSrcAlpha
@@ -57,7 +56,7 @@
 				struct v2f
 				{
 					float4 position : SV_POSITION;
-					float3 normal : NORMAL;
+					float3 normal : TEXCOORD1;
 					fixed4 color : COLOR0;
 					float3 lightDir : TEXCOORD0;
 				};
