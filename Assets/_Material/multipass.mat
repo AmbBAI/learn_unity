@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: cover
-  m_Shader: {fileID: 4800000, guid: aa731c94ba5d16f4c886ae2979112cd0, type: 3}
+  m_Name: multipass
+  m_Shader: {fileID: 4800000, guid: b9743be8ed4dce74a83142102772b3c1, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -26,7 +26,3 @@ Material:
         first:
           name: _Color
         second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _RimColor
-        second: {r: .0367646813, g: 1, b: 1, a: 1}
