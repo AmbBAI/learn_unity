@@ -9,16 +9,14 @@ public class NavMeshTest : MonoBehaviour {
 	void Update () {
 
 		if (!agent.hasPath) anim.CrossFade("idle");
+		else anim.CrossFade("run");
 		if (Input.GetMouseButtonDown(0))
 		{
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hitInfo;
 			if(Physics.Raycast(ray, out hitInfo))
 			{
-				if (agent.SetDestination(hitInfo.point))
-				{
-					anim.CrossFade("run");
-				}
+				agent.SetDestination(hitInfo.point);
 			}
 		}
 	}
