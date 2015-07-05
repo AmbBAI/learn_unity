@@ -1,23 +1,24 @@
 fileFormatVersion: 2
-guid: ce8d79c79d11b8f9d00076e98d76c639
+guid: ac6f60f12976bea47a4b5158d3c0283b
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
     100000: //RootNode
+    100002: stone
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: pPlane1
-    4300002: nurbsToPoly1
-    4300004: pCylinder1
-    4300006: waterPlaneMesh
+    400002: stone
+    2300000: stone
+    3300000: stone
+    4300000: stone-uvlayout
+    4300002: stone
+    7400000: Default Take
     11100000: //RootNode
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 3
     materialSearch: 1
   animations:
-    legacyGenerateAnimations: 0
+    legacyGenerateAnimations: 4
     bakeSimulation: 0
     optimizeGameObjects: 0
     motionNodeName: 
@@ -31,7 +32,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: .00999999978
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -41,12 +42,12 @@ ModelImporter:
     optimizeMeshForGPU: 1
     weldVertices: 1
     secondaryUVAngleDistortion: 8
-    secondaryUVAreaDistortion: 15
+    secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
   tangentSpace:
     normalSmoothAngle: 60
-    splitTangentsAcrossUV: 0
+    splitTangentsAcrossUV: 1
     normalImportMode: 0
     tangentImportMode: 1
   importAnimation: 0
@@ -64,5 +65,5 @@ ModelImporter:
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 1
-  additionalBone: 1
+  additionalBone: 0
   userData: 
