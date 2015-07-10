@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class BatchTest : MonoBehaviour {
 
 	public GameObject obj;
+	public Transform root;
 	List<GameObject> objPool = new List<GameObject>();
 	int vertexCount = 0;
 	int triangleCount = 0;
@@ -32,8 +33,15 @@ public class BatchTest : MonoBehaviour {
 		rect.Set(rect.xMin, rect.yMin + 20, rect.width, rect.height);
 		if (GUI.Button(rect, "Add Obj"))
 		{
-			Object newObj = GameObject.Instantiate(obj);
-			objPool.Add(newObj as GameObject);
+			GameObject newObj = GameObject.Instantiate(obj) as GameObject;
+			newObj.transform.parent = root;
+			newObj.transform.localPosition = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(0f, 1f));
+			objPool.Add(newObj);
+		}
+		rect.Set(rect.xMin, rect.yMin + 20, rect.width, rect.height);
+		if (GUI.Button(rect, "Run Static Batch"))
+		{
+			StaticBatchingUtility.Combine(root.gameObject);
 		}
 		rect.Set(rect.xMin, rect.yMin + 20, rect.width, rect.height);
 	}
