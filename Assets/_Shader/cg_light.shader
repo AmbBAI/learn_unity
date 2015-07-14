@@ -27,6 +27,7 @@
 					fixed4 vlit1 : COLOR1;
 					fixed4 vlit2 : COLOR2;
 					fixed4 vlit3 : COLOR3;
+					fixed3 shl : TEXCOORD2;
 				};
 
 				v2f vert(vin i)
@@ -44,6 +45,8 @@
 					o.vlit1 = unity_LightColor[1] *  (ndotl.y * unity_4LightAtten0.y);
 					o.vlit2 = unity_LightColor[2] *  (ndotl.z * unity_4LightAtten0.z);
 					o.vlit3 = unity_LightColor[3] *  (ndotl.w * unity_4LightAtten0.w);
+					o.shl = ShadeSH9(fixed4(normalize(o.normal), 1.));
+
 					return o;
 				}
 
@@ -51,13 +54,15 @@
 				{
 					//return fixed4(0.,0.,0.,0.);
 
-					float ndotl = max(0., dot(i.normal, normalize(_WorldSpaceLightPos0.xyz)));
-					return _LightColor0 * ndotl;
+					//float ndotl = max(0., dot(i.normal, normalize(_WorldSpaceLightPos0.xyz)));
+					//return _LightColor0 * ndotl;
 
 					//return i.vlit0;
 					//return i.vlit1;
 					//return i.vlit2;
 					//return i.vlit3;
+
+					return fixed4(i.shl, 1.);
 				}
 			ENDCG
 		}
