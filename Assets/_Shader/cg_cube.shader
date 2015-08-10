@@ -3,7 +3,7 @@
 	  _CubeMap("Cube Map", Cube) = "" {}
 	}
 	SubShader {
-		Tags { "QUEUE"="Geometry" "RenderType"="Opaque" " IgnoreProjector"="True" }
+		Tags { "QUEUE"="Geometry" "RenderType"="Opaque" }
 		LOD 200
 
         

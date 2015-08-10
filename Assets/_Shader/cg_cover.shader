@@ -14,7 +14,6 @@
 			CGPROGRAM
 				#pragma vertex vert
 				#pragma fragment frag
-
 				#include "UnityCG.cginc"
 
 				fixed4 _RimColor;
@@ -50,7 +49,6 @@
 			CGPROGRAM
 				#pragma vertex vert
 				#pragma fragment frag
-
 				#include "UnityCG.cginc"
 
 				struct v2f
@@ -80,5 +78,5 @@
 			ENDCG
 		}
 	} 
-	FallBack "Diffuse"
+
 }

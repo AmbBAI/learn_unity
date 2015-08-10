@@ -5,7 +5,7 @@
 		LOD 200
 		
 		Pass {
-			Tags { "RenderType"="Transparent" "Queue" = "Transparent" }
+			Tags { "RenderType"="Opaque" }
 
 			CGPROGRAM
 				#pragma vertex vert
