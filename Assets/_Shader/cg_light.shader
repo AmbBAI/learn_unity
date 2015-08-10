@@ -10,6 +10,8 @@
 			CGPROGRAM
 				#pragma vertex vert
 				#pragma fragment frag
+				#pragma target 3.0
+				#pragma glsl
 				#include "UnityCG.cginc"
 				#include "Lighting.cginc"
 
@@ -23,11 +25,11 @@
 				{
 					float4 pos : SV_POSITION;
 					float3 normal : TEXCOORD1;
-					fixed4 vlit0 : COLOR0;
-					fixed4 vlit1 : COLOR1;
-					fixed4 vlit2 : COLOR2;
-					fixed4 vlit3 : COLOR3;
-					fixed3 shl : TEXCOORD2;
+					fixed4 vlit0 : TEXCOORD2;
+					fixed4 vlit1 : TEXCOORD3;
+					fixed4 vlit2 : TEXCOORD4;
+					fixed4 vlit3 : TEXCOORD5;
+					fixed3 shl : TEXCOORD6;
 				};
 
 				v2f vert(vin i)

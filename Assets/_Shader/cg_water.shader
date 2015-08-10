@@ -55,9 +55,9 @@
             float3 v_bumpUv1 : TEXCOORD0;
             float2 v_foamUv : TEXCOORD1;
             float2 v_worldPos : TEXCOORD2;
-			fixed3 v_darkColor : COLOR1;
-			fixed3 v_lightColor : COLOR2;
-            float4 v_wave : COLOR3;
+			fixed3 v_darkColor : TEXCOORD3;
+			fixed3 v_lightColor : TEXCOORD4;
+            float4 v_wave : TEXCOORD5;
         };
 
         fragmentInput vert(vertexInput i) {
