@@ -38,27 +38,19 @@ Material:
       data:
         first:
           name: _Reflection
-        second: 0
-      data:
-        first:
-          name: _Shininess
-        second: 1
-      data:
-        first:
-          name: _Gloss
-        second: 1
-      data:
-        first:
-          name: _FrezPow
-        second: .25
-      data:
-        first:
-          name: _FrezFalloff
-        second: 4
+        second: .660714269
       data:
         first:
           name: _SHLightingScale
         second: 1
+      data:
+        first:
+          name: _FresnelPow
+        second: .964285672
+      data:
+        first:
+          name: _FresnelFalloff
+        second: 1.60714269
     m_Colors:
       data:
         first:
