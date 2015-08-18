@@ -67,3 +67,4 @@ $RECYCLE.BIN/
 *.exe
 premake*
 build*
+*.apk

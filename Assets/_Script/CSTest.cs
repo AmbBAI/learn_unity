@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 
 public class CSTest : MonoBehaviour {
 
-	void Start()
+	void OnGUI()
 	{
-		Debug.Log(add(1, 2));
+		GUI.Label(new Rect(0, 0, 500, 500), add(1, 2).ToString());
 	}
 
 	[DllImport("cpp_plugin")]
