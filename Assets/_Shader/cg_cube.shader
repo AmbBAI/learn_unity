@@ -61,7 +61,7 @@
 			fixed3 reflectDir = reflect (-viewDir, i.normal);
 			fixed4 reflectCol = texCUBE (_CubeMap, reflectDir);
 			float fresnel = pow (1. - saturate (abs (dot (viewDir, i.normal))), _FresnelFalloff) * _FresnelPow;
-			reflectCol *= fresnel + _Reflection;
+			reflectCol *= saturate (fresnel + _Reflection);
 
 			return color + reflectCol + fresnel * reflectCol;
 		}

@@ -17,7 +17,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 7f0b090851bffba428c71982f88c6feb, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -38,7 +38,7 @@ Material:
       data:
         first:
           name: _Reflection
-        second: .660714269
+        second: .321428567
       data:
         first:
           name: _SHLightingScale
@@ -46,11 +46,11 @@ Material:
       data:
         first:
           name: _FresnelPow
-        second: .964285672
+        second: .535714269
       data:
         first:
           name: _FresnelFalloff
-        second: 1.60714269
+        second: 1.07142842
     m_Colors:
       data:
         first:
