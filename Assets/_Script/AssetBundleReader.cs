@@ -82,7 +82,7 @@ public class AssetBundleReader : MonoBehaviour
 		{
 			string assetPath = string.Format("{0}{1}/{2}.prefab", packPath, package, asset);
 			Debug.Log(assetPath);
-			Object assetObject = Resources.LoadAssetAtPath(assetPath, type);
+			Object assetObject = UnityEditor.AssetDatabase.LoadAssetAtPath(assetPath, type);
 			loadCallBack(assetObject as GameObject);
 			yield break;
 		}
@@ -94,7 +94,7 @@ public class AssetBundleReader : MonoBehaviour
 		assetBundleDict.TryGetValue(package, out assetBundle);
 		if (assetBundle == null) yield break;
 
-		AssetBundleRequest asyncRequest = assetBundle.LoadAsync(asset, type);
+		AssetBundleRequest asyncRequest = assetBundle.LoadAssetAsync(asset, type);
 		yield return asyncRequest;
 
 		loadCallBack(asyncRequest.asset);

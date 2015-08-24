@@ -163,11 +163,11 @@ public class MirrorReflection : MonoBehaviour
 		if (!reflectionCamera) // catch both not-in-dictionary and in-dictionary-but-deleted-GO
 		{
 			GameObject go = new GameObject("Mirror Refl Camera id" + GetInstanceID() + " for " + currentCamera.GetInstanceID(), typeof(Camera), typeof(Skybox));
-			reflectionCamera = go.camera;
+			reflectionCamera = go.GetComponent<Camera>();
 			reflectionCamera.enabled = false;
 			reflectionCamera.transform.position = transform.position;
 			reflectionCamera.transform.rotation = transform.rotation;
-			reflectionCamera.gameObject.AddComponent("FlareLayer");
+			reflectionCamera.gameObject.AddComponent<FlareLayer>();
 			go.hideFlags = HideFlags.HideAndDontSave;
 			m_ReflectionCameras[currentCamera] = reflectionCamera;
 		}
