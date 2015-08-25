@@ -1,113 +1,99 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-// This is in fact just the Water script from Pro Standard Assets,
-// just with refraction stuff removed.
-
-[ExecuteInEditMode] // Make mirror live-update even when not in play mode
+[ExecuteInEditMode]
 public class MirrorReflection : MonoBehaviour
 {
-	public bool m_DisablePixelLights = true;
-	public int m_TextureSize = 256;
-	public float m_ClipPlaneOffset = 0.07f;
+	public Camera mainCamera;
 
-	public LayerMask m_ReflectLayers = -1;
+	public int renderTextureSize = 256;
+	public float clipPlaneOffset = 0.07f;
 
-	private Hashtable m_ReflectionCameras = new Hashtable(); // Camera -> Camera table
+	private static int renderDepth = 0;
+	public const int renderDepthMax = 2;
 
-	private RenderTexture m_ReflectionTexture = null;
-	private int m_OldReflectionTextureSize = 0;
-
-	private static bool s_InsideRendering = false;
-
-	// This is called when it's known that the object will be rendered by some
-	// camera. We render reflections and do other updates here.
-	// Because the script executes in edit mode, reflections for the scene view
-	// camera will just work!
-	public void OnWillRenderObject()
+	class MirrorRender
 	{
-		var rend = GetComponent<Renderer>();
-		if (!enabled || !rend || !rend.sharedMaterial || !rend.enabled)
-			return;
+		public Camera camera = null;
+		public RenderTexture target = null;
+	}
+	MirrorRender[] mirrorRenderers = new MirrorRender[renderDepthMax];
 
-		Camera cam = Camera.current;
-		if (!cam)
-			return;
+	void Start()
+	{
+		for (int i = 0; i < renderDepthMax; ++i)
+		{
+			if (mirrorRenderers[i] == null) mirrorRenderers[i] = new MirrorRender();
+		}
+	}
 
-		// Safeguard from recursive reflections.        
-		if (s_InsideRendering)
-			return;
-		s_InsideRendering = true;
+	void OnDestroy()
+	{
+		for (int i = 0; i < renderDepthMax; ++i)
+		{
+			if (mirrorRenderers[i] != null && mirrorRenderers[i].camera)
+			{
+				DestroyImmediate(mirrorRenderers[i].camera.gameObject);
+			}
+		}
+	}
 
-		Camera reflectionCamera;
-		CreateMirrorObjects(cam, out reflectionCamera);
+	void OnWillRenderObject()
+	{
+		Camera currentCamera = Camera.current;
+		if (!currentCamera) return;
+		if (currentCamera == mainCamera) renderDepth = 0;
 
-		// find out the reflection plane: position and normal in world space
+		if (renderDepth >= renderDepthMax) return;
+
+		CreateMirrorObjects(currentCamera, ref mirrorRenderers[renderDepth]);
+		Camera reflectionCamera = mirrorRenderers[renderDepth].camera;
+
 		Vector3 pos = transform.position;
 		Vector3 normal = transform.up;
-
-		// Optionally disable pixel lights for reflection
-		int oldPixelLightCount = QualitySettings.pixelLightCount;
-		if (m_DisablePixelLights)
-			QualitySettings.pixelLightCount = 0;
-
-		UpdateCameraModes(cam, reflectionCamera);
-
-		// Render reflection
-		// Reflect camera around reflection plane
-		float d = -Vector3.Dot(normal, pos) - m_ClipPlaneOffset;
+		float d = -Vector3.Dot(normal, pos) - clipPlaneOffset;
 		Vector4 reflectionPlane = new Vector4(normal.x, normal.y, normal.z, d);
 
 		Matrix4x4 reflection = Matrix4x4.zero;
 		CalculateReflectionMatrix(ref reflection, reflectionPlane);
-		Vector3 oldpos = cam.transform.position;
+		Vector3 oldpos = currentCamera.transform.position;
 		Vector3 newpos = reflection.MultiplyPoint(oldpos);
-		reflectionCamera.worldToCameraMatrix = cam.worldToCameraMatrix * reflection;
+		reflectionCamera.worldToCameraMatrix = currentCamera.worldToCameraMatrix * reflection;
 
-		// Setup oblique projection matrix so that near plane is our reflection
-		// plane. This way we clip everything below/above it for free.
 		Vector4 clipPlane = CameraSpacePlane(reflectionCamera, pos, normal, 1.0f);
-		//Matrix4x4 projection = cam.projectionMatrix;
-		Matrix4x4 projection = cam.CalculateObliqueMatrix(clipPlane);
+		Matrix4x4 projection = currentCamera.CalculateObliqueMatrix(clipPlane);
 		reflectionCamera.projectionMatrix = projection;
 
-		reflectionCamera.cullingMask = ~(1 << 4) & m_ReflectLayers.value; // never render water layer
-		reflectionCamera.targetTexture = m_ReflectionTexture;
+		reflectionCamera.targetTexture = mirrorRenderers[renderDepth].target;
+
+		renderDepth += 1;
 		GL.SetRevertBackfacing(true);
 		reflectionCamera.transform.position = newpos;
-		Vector3 euler = cam.transform.eulerAngles;
+		Vector3 euler = currentCamera.transform.eulerAngles;
 		reflectionCamera.transform.eulerAngles = new Vector3(0, euler.y, euler.z);
+		//Debug.Log("<" + GetInstanceID() + "," + renderDepth);
 		reflectionCamera.Render();
-		reflectionCamera.transform.position = oldpos;
+		//Debug.Log(GetInstanceID() + "," + renderDepth + ">");
 		GL.SetRevertBackfacing(false);
+		renderDepth -= 1;
+
+		SetReflectTexture(mirrorRenderers[renderDepth].target);
+	}
+
+
+	void SetReflectTexture(RenderTexture renderTexture)
+	{
+		var rend = GetComponent<Renderer>();
+		if (!rend || !rend.sharedMaterial) return;
+
 		Material[] materials = rend.sharedMaterials;
 		foreach (Material mat in materials)
 		{
 			if (mat.HasProperty("_ReflectionTex"))
-				mat.SetTexture("_ReflectionTex", m_ReflectionTexture);
+				mat.SetTexture("_ReflectionTex", renderTexture);
 		}
-
-		// Restore pixel light count
-		if (m_DisablePixelLights)
-			QualitySettings.pixelLightCount = oldPixelLightCount;
-
-		s_InsideRendering = false;
 	}
-
-
-	// Cleanup all the objects we possibly have created
-	void OnDisable()
-	{
-		if (m_ReflectionTexture)
-		{
-			DestroyImmediate(m_ReflectionTexture);
-			m_ReflectionTexture = null;
-		}
-		foreach (DictionaryEntry kvp in m_ReflectionCameras)
-			DestroyImmediate(((Camera)kvp.Value).gameObject);
-		m_ReflectionCameras.Clear();
-	}
-
 
 	private void UpdateCameraModes(Camera src, Camera dest)
 	{
@@ -130,9 +116,7 @@ public class MirrorReflection : MonoBehaviour
 				mysky.material = sky.material;
 			}
 		}
-		// update other values to match current camera.
-		// even if we are supplying custom camera&projection matrices,
-		// some of values are used elsewhere (e.g. skybox uses far plane)
+
 		dest.farClipPlane = src.farClipPlane;
 		dest.nearClipPlane = src.nearClipPlane;
 		dest.orthographic = src.orthographic;
@@ -141,36 +125,34 @@ public class MirrorReflection : MonoBehaviour
 		dest.orthographicSize = src.orthographicSize;
 	}
 
-	// On-demand create any objects we need
-	private void CreateMirrorObjects(Camera currentCamera, out Camera reflectionCamera)
+	private void CreateMirrorObjects(Camera currentCamera, ref MirrorRender reflectionRender)
 	{
-		reflectionCamera = null;
-
-		// Reflection render texture
-		if (!m_ReflectionTexture || m_OldReflectionTextureSize != m_TextureSize)
+		if (reflectionRender.target == null)
 		{
-			if (m_ReflectionTexture)
-				DestroyImmediate(m_ReflectionTexture);
-			m_ReflectionTexture = new RenderTexture(m_TextureSize, m_TextureSize, 16);
-			m_ReflectionTexture.name = "__MirrorReflection" + GetInstanceID();
-			m_ReflectionTexture.isPowerOfTwo = true;
-			m_ReflectionTexture.hideFlags = HideFlags.DontSave;
-			m_OldReflectionTextureSize = m_TextureSize;
+			reflectionRender.target = new RenderTexture(renderTextureSize, renderTextureSize, 16);
+			reflectionRender.target.name = GetInstanceID() + "," + renderDepth;
+			reflectionRender.target.isPowerOfTwo = true;
+			reflectionRender.target.hideFlags = HideFlags.DontSave;
 		}
 
-		// Camera for reflection
-		reflectionCamera = m_ReflectionCameras[currentCamera] as Camera;
-		if (!reflectionCamera) // catch both not-in-dictionary and in-dictionary-but-deleted-GO
+		if (reflectionRender.camera != null)
 		{
-			GameObject go = new GameObject("Mirror Refl Camera id" + GetInstanceID() + " for " + currentCamera.GetInstanceID(), typeof(Camera), typeof(Skybox));
-			reflectionCamera = go.camera;
-			reflectionCamera.enabled = false;
-			reflectionCamera.transform.position = transform.position;
-			reflectionCamera.transform.rotation = transform.rotation;
-			reflectionCamera.gameObject.AddComponent("FlareLayer");
-			go.hideFlags = HideFlags.HideAndDontSave;
-			m_ReflectionCameras[currentCamera] = reflectionCamera;
+			reflectionRender.camera.enabled = false;
+			reflectionRender.camera.transform.position = transform.position;
+			reflectionRender.camera.transform.rotation = transform.rotation;
 		}
+		else
+		{
+			GameObject go = new GameObject(GetInstanceID() + "," + renderDepth, typeof(Camera), typeof(Skybox));
+			reflectionRender.camera = go.camera;
+			reflectionRender.camera.enabled = false;
+			reflectionRender.camera.transform.position = transform.position;
+			reflectionRender.camera.transform.rotation = transform.rotation;
+			reflectionRender.camera.gameObject.AddComponent("FlareLayer");
+			go.hideFlags = HideFlags.DontSave;
+		}
+
+		UpdateCameraModes(currentCamera, reflectionRender.camera);
 	}
 
 	// Extended sign: returns -1, 0 or 1 based on sign of a
@@ -184,7 +166,7 @@ public class MirrorReflection : MonoBehaviour
 	// Given position/normal of the plane, calculates plane in camera space.
 	private Vector4 CameraSpacePlane(Camera cam, Vector3 pos, Vector3 normal, float sideSign)
 	{
-		Vector3 offsetPos = pos + normal * m_ClipPlaneOffset;
+		Vector3 offsetPos = pos + normal * clipPlaneOffset;
 		Matrix4x4 m = cam.worldToCameraMatrix;
 		Vector3 cpos = m.MultiplyPoint(offsetPos);
 		Vector3 cnormal = m.MultiplyVector(normal).normalized * sideSign;
