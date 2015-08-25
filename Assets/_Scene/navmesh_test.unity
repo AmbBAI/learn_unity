@@ -79,7 +79,7 @@ NavMeshSettings:
     agentRadius: 5
     agentHeight: 40
     agentSlope: 45
-    agentClimb: .00999999978
+    agentClimb: 8
     ledgeDropHeight: 50
     maxJumpAcrossDistance: 50
     accuratePlacement: 0
