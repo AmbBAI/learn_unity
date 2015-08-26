@@ -749,7 +749,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1434001224}
-  - 114: {fileID: 1434001225}
   m_Layer: 0
   m_Name: Mirror
   m_TagString: Untagged
@@ -772,17 +771,6 @@ Transform:
   - {fileID: 1401823284}
   m_Father: {fileID: 0}
   m_RootOrder: 1
---- !u!114 &1434001225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1434001223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbee89d84906ef24aa28df1e3194f81f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1472843721
 GameObject:
   m_ObjectHideFlags: 0
