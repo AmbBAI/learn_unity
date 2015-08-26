@@ -35,7 +35,7 @@
 			{
 				fixed4 tex = tex2D(_MainTex, i.uv);
 				fixed4 refl = tex2Dproj(_ReflectionTex, UNITY_PROJ_COORD(i.refl));
-				return tex * refl;
+				return tex * .4 + refl * .6;
 			}
 			ENDCG
 	    }
