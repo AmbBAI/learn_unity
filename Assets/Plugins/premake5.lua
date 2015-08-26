@@ -1,6 +1,7 @@
 location "build"
 solution "cpp_plugin"
-  configurations {"Debug", "x86", "x86_64"}
+  configurations {"Debug", "Release"}
+  platforms { "x32", "x64" }
   language "C++"
 
   configuration "Debug"
@@ -8,7 +9,7 @@ solution "cpp_plugin"
     flags { "Symbols"}
     targetsuffix "_d"
 
-  configuration "x86 or x86_64"
+  configuration "Release"
     defines { "NDEBUG" }
     flags { "Optimize"}
 
@@ -16,8 +17,8 @@ solution "cpp_plugin"
     kind "SharedLib"
     files { "cpp_plugin/**.cpp", "cpp_plugin/**.h" }
 
-    configuration "x86"
+    configuration "x32"
       targetdir "x86/"
 
-    configuration "x86_64"
+    configuration "x64"
       targetdir "x86_64/"
