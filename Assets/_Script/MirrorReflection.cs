@@ -37,7 +37,7 @@ public class MirrorReflection : MonoBehaviour
 	{
 		GameObject go = new GameObject("__MirrorCamera", typeof(Camera), typeof(Skybox));
 		go.hideFlags = HideFlags.HideAndDontSave;
-		var cam = go.camera;
+		var cam = go.GetComponent<Camera>();
 		cam.enabled = false;
 		cam.targetTexture = new RenderTexture(renderTextureSize, renderTextureSize, 24);
 		cam.targetTexture.isPowerOfTwo = true;
