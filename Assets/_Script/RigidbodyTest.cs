@@ -5,23 +5,30 @@ using System.Collections;
 public class RigidbodyTest : MonoBehaviour {
 
 	Rigidbody _rigidbody;
-	public Vector3 force;
-	public Vector3 velocity;
+	public float moveK = 5f;
+	public float jumpK = 10f;
 
-	// Use this for initialization
 	void Start () {
 		_rigidbody = GetComponent<Rigidbody>();
 	}
 
-	[ContextMenu("AddForce")]
-	public void AddForce()
+	void Update()
 	{
-		_rigidbody.AddForce(force);
-	}
+		Camera currentCamera = Camera.current;
+		if (currentCamera == null) return;
+		Transform cameraTrans = currentCamera.transform;
+		Vector3 force = Vector3.zero;
+		if (Input.GetKey(KeyCode.UpArrow)) force += cameraTrans.forward;
+		if (Input.GetKey(KeyCode.DownArrow)) force -= cameraTrans.forward;
+		if (Input.GetKey(KeyCode.LeftArrow)) force -= cameraTrans.right;
+		if (Input.GetKey(KeyCode.RightArrow)) force += cameraTrans.right;
 
-	[ContextMenu("AddVelocity")]
-	public void AddVelocity()
-	{
-		_rigidbody.velocity += velocity;
+		_rigidbody.velocity += (force.normalized) * Time.deltaTime * moveK;
+
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			Debug.Log("?????");
+			_rigidbody.velocity += cameraTrans.up * jumpK;
+		}
 	}
 }

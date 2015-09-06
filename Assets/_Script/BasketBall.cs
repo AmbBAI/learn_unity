@@ -27,6 +27,8 @@ public class BasketBall : MonoBehaviour {
 	[ContextMenu("Shot")]
 	public void Shot()
 	{
+		if (!Application.isPlaying) return;
+
 		Vector3 velocity = CalcThrowVelocity();
 		Debug.Log(velocity);
 		_rigidbody.isKinematic = false;
@@ -37,8 +39,12 @@ public class BasketBall : MonoBehaviour {
 	{
 		Vector3 delta = targetTrans.position - _transform.position;
 		virtualTarget = targetTrans.position - delta * 0.1f;
-		virtualTarget.y = 2f * targetTrans.position.y - virtualTarget.y;
+		float deltaY = virtualTarget.y - targetTrans.position.y;
+		if (deltaY < 0f) deltaY = -deltaY;
+		if (deltaY < 0.5f) deltaY = 0.5f;
+		virtualTarget.y = targetTrans.position.y + deltaY;
 		Debug.Log(virtualTarget);
+
 		delta = virtualTarget - _transform.position;
 		float t = Random.Range(0.9f, 1f);
 		return (delta - Physics.gravity * (0.5f * t * t)) / t;
