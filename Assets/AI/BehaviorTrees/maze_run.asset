@@ -17,46 +17,73 @@ MonoBehaviour:
       debugbreak=&quot;False&quot;&gt;&lt;selector usepriorities=&quot;False&quot;
       repeatuntil=&quot;&quot; name=&quot;sequencer&quot; debugbreak=&quot;False&quot;&gt;&lt;sequencer
       usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; priority=&quot;&quot;
-      name=&quot;sequencer&quot; debugbreak=&quot;False&quot;&gt;&lt;decision repeatuntil=&quot;&quot;
-      priority=&quot;&quot; parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;&quot;
-      name=&quot;!wall front&quot; debugbreak=&quot;False&quot; classname=&quot;RevertResult&quot;&gt;&lt;action
-      repeatuntil=&quot;&quot; parametervalues=&quot;MC40ACgwLDAsMSkAdHJ1ZQ==&quot;
-      parameters=&quot;ZGlzdGFuY2UAZGlyZWN0aW9uAGlzTG9jYWw=&quot; namespace=&quot;(global)&quot;
-      name=&quot;wall front&quot; debugbreak=&quot;False&quot; classname=&quot;CheckWall&quot;
-      /&gt;&lt;/decision&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
-      parametervalues=&quot;MC41&quot; parameters=&quot;bW92ZURpc3RhbmNl&quot; namespace=&quot;(global)&quot;
+      name=&quot;sequencer&quot; debugbreak=&quot;False&quot;&gt;&lt;action repeatuntil=&quot;&quot;
+      priority=&quot;&quot; parametervalues=&quot;MC4yADAuNQAoMCwwLDEpAHRydWUAdHJ1ZQ==&quot;
+      parameters=&quot;cmFkaXVzAGRpc3RhbmNlAGRpcmVjdGlvbgBpc0xvY2FsAGlzSW52ZXJ0UmVzdWx0&quot;
+      namespace=&quot;(global)&quot; name=&quot;no wall front&quot; debugbreak=&quot;False&quot;
+      classname=&quot;CheckWall&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;(global)&quot;
       name=&quot;move front&quot; debugbreak=&quot;False&quot; classname=&quot;MoveForward&quot;
       /&gt;&lt;/sequencer&gt;&lt;selector usepriorities=&quot;False&quot; repeatuntil=&quot;failure&quot;
       priority=&quot;&quot; name=&quot;selector&quot; debugbreak=&quot;False&quot;&gt;&lt;sequencer
       usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; priority=&quot;&quot;
-      name=&quot;sequencer&quot; debugbreak=&quot;False&quot;&gt;&lt;decision repeatuntil=&quot;&quot;
-      priority=&quot;&quot; parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;&quot;
-      name=&quot;!wall right&quot; debugbreak=&quot;False&quot; classname=&quot;RevertResult&quot;&gt;&lt;action
-      repeatuntil=&quot;&quot; parametervalues=&quot;MC41ACgxLDAsMCkAdHJ1ZQ==&quot;
-      parameters=&quot;ZGlzdGFuY2UAZGlyZWN0aW9uAGlzTG9jYWw=&quot; namespace=&quot;&quot;
-      name=&quot;wall right&quot; debugbreak=&quot;False&quot; classname=&quot;CheckWall&quot;
-      /&gt;&lt;/decision&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      name=&quot;sequencer&quot; debugbreak=&quot;False&quot;&gt;&lt;action repeatuntil=&quot;&quot;
+      priority=&quot;&quot; parametervalues=&quot;MC4yADAuNQAoMSwwLDApAHRydWUAdHJ1ZQ==&quot;
+      parameters=&quot;cmFkaXVzAGRpc3RhbmNlAGRpcmVjdGlvbgBpc0xvY2FsAGlzSW52ZXJ0UmVzdWx0&quot;
+      namespace=&quot;&quot; name=&quot;no wall right&quot; debugbreak=&quot;False&quot;
+      classname=&quot;CheckWall&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
       parametervalues=&quot;KDAsOTAsMCkAdHJ1ZQ==&quot; parameters=&quot;cm90YXRlQW5nbGUAaXNMb2NhbA==&quot;
       namespace=&quot;&quot; name=&quot;rotate to right&quot; debugbreak=&quot;False&quot;
       classname=&quot;RotateFace&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
       parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;(global)&quot;
       name=&quot;wait&quot; debugbreak=&quot;False&quot; classname=&quot;WaitRotateFace&quot;
-      /&gt;&lt;/sequencer&gt;&lt;sequencer usepriorities=&quot;False&quot; repeatuntil=&quot;&quot;
-      priority=&quot;&quot; name=&quot;sequencer&quot; debugbreak=&quot;False&quot;&gt;&lt;action
-      repeatuntil=&quot;&quot; priority=&quot;&quot; parametervalues=&quot;MC40ACgwLDAsMSkAdHJ1ZQ==&quot;
-      parameters=&quot;ZGlzdGFuY2UAZGlyZWN0aW9uAGlzTG9jYWw=&quot; namespace=&quot;(global)&quot;
-      name=&quot;wall front&quot; debugbreak=&quot;False&quot; classname=&quot;CheckWall&quot;
-      /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot; parametervalues=&quot;KDAsLTkwLDApAHRydWU=&quot;
-      parameters=&quot;cm90YXRlQW5nbGUAaXNMb2NhbA==&quot; namespace=&quot;(global)&quot;
-      name=&quot;rotate to left&quot; debugbreak=&quot;False&quot; classname=&quot;RotateFace&quot;
-      /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot; parametervalues=&quot;&quot;
-      parameters=&quot;&quot; namespace=&quot;&quot; name=&quot;wait&quot; debugbreak=&quot;False&quot;
-      classname=&quot;WaitRotateFace&quot; /&gt;&lt;/sequencer&gt;&lt;action repeatuntil=&quot;&quot;
-      priority=&quot;&quot; parametervalues=&quot;MC41&quot; parameters=&quot;bW92ZURpc3RhbmNl&quot;
-      namespace=&quot;(global)&quot; name=&quot;move front&quot; debugbreak=&quot;False&quot;
-      classname=&quot;MoveForward&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      /&gt;&lt;selector usepriorities=&quot;False&quot; repeatuntil=&quot;&quot; priority=&quot;&quot;
+      name=&quot;selector&quot; debugbreak=&quot;False&quot;&gt;&lt;sequencer usepriorities=&quot;False&quot;
+      repeatuntil=&quot;&quot; priority=&quot;&quot; name=&quot;sequencer&quot; debugbreak=&quot;False&quot;&gt;&lt;action
+      repeatuntil=&quot;&quot; priority=&quot;&quot; parametervalues=&quot;MC4yADAuNTUAKDAsMCwxKQB0cnVlAGZhbHNl&quot;
+      parameters=&quot;cmFkaXVzAGRpc3RhbmNlAGRpcmVjdGlvbgBpc0xvY2FsAGlzSW52ZXJ0UmVzdWx0&quot;
+      namespace=&quot;&quot; name=&quot;wall front&quot; debugbreak=&quot;False&quot;
+      classname=&quot;CheckWall&quot; /&gt;&lt;decision repeatuntil=&quot;&quot; priority=&quot;&quot;
       parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;&quot;
-      name=&quot;wait&quot; debugbreak=&quot;False&quot; classname=&quot;WaitMoveForward&quot;
+      name=&quot;decision&quot; debugbreak=&quot;False&quot; classname=&quot;RevertResult&quot;&gt;&lt;sequencer
+      usepriorities=&quot;False&quot; repeatuntil=&quot;failure&quot; name=&quot;sequencer&quot;
+      debugbreak=&quot;False&quot;&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      parametervalues=&quot;MC4yADAuNQAoMCwwLDEpAHRydWUAdHJ1ZQ==&quot; parameters=&quot;cmFkaXVzAGRpc3RhbmNlAGRpcmVjdGlvbgBpc0xvY2FsAGlzSW52ZXJ0UmVzdWx0&quot;
+      namespace=&quot;&quot; name=&quot;no wall front&quot; debugbreak=&quot;False&quot;
+      classname=&quot;CheckWall&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;(global)&quot;
+      name=&quot;move front&quot; debugbreak=&quot;False&quot; classname=&quot;MoveForward&quot;
+      /&gt;&lt;/sequencer&gt;&lt;/decision&gt;&lt;action repeatuntil=&quot;&quot;
+      priority=&quot;&quot; parametervalues=&quot;KDAsLTkwLDApAHRydWU=&quot; parameters=&quot;cm90YXRlQW5nbGUAaXNMb2NhbA==&quot;
+      namespace=&quot;&quot; name=&quot;rotate to left&quot; debugbreak=&quot;False&quot;
+      classname=&quot;RotateFace&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;(global)&quot;
+      name=&quot;wait&quot; debugbreak=&quot;False&quot; classname=&quot;WaitRotateFace&quot;
+      /&gt;&lt;/sequencer&gt;&lt;sequencer usepriorities=&quot;False&quot; repeatuntil=&quot;failure&quot;
+      priority=&quot;&quot; name=&quot;sequencer&quot; debugbreak=&quot;False&quot;&gt;&lt;action
+      repeatuntil=&quot;&quot; priority=&quot;&quot; parametervalues=&quot;MC4yADAuNQAoMSwwLDApAHRydWUAdHJ1ZQ==&quot;
+      parameters=&quot;cmFkaXVzAGRpc3RhbmNlAGRpcmVjdGlvbgBpc0xvY2FsAGlzSW52ZXJ0UmVzdWx0&quot;
+      namespace=&quot;&quot; name=&quot;no wall right&quot; debugbreak=&quot;False&quot;
+      classname=&quot;CheckWall&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      parametervalues=&quot;MC4yADAuNQAoMCwwLDEpAHRydWUAdHJ1ZQ==&quot; parameters=&quot;cmFkaXVzAGRpc3RhbmNlAGRpcmVjdGlvbgBpc0xvY2FsAGlzSW52ZXJ0UmVzdWx0&quot;
+      namespace=&quot;&quot; name=&quot;no wall front&quot; debugbreak=&quot;False&quot;
+      classname=&quot;CheckWall&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;(global)&quot;
+      name=&quot;move front&quot; debugbreak=&quot;False&quot; classname=&quot;MoveForward&quot;
+      /&gt;&lt;/sequencer&gt;&lt;/selector&gt;&lt;/sequencer&gt;&lt;sequencer usepriorities=&quot;False&quot;
+      repeatuntil=&quot;&quot; priority=&quot;&quot; name=&quot;sequencer&quot; debugbreak=&quot;False&quot;&gt;&lt;action
+      repeatuntil=&quot;&quot; priority=&quot;&quot; parametervalues=&quot;MC4yADAuNQAoMCwwLDEpAHRydWUAZmFsc2U=&quot;
+      parameters=&quot;cmFkaXVzAGRpc3RhbmNlAGRpcmVjdGlvbgBpc0xvY2FsAGlzSW52ZXJ0UmVzdWx0&quot;
+      namespace=&quot;(global)&quot; name=&quot;wall front&quot; debugbreak=&quot;False&quot;
+      classname=&quot;CheckWall&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      parametervalues=&quot;KDAsLTkwLDApAHRydWU=&quot; parameters=&quot;cm90YXRlQW5nbGUAaXNMb2NhbA==&quot;
+      namespace=&quot;(global)&quot; name=&quot;rotate to left&quot; debugbreak=&quot;False&quot;
+      classname=&quot;RotateFace&quot; /&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;&quot;
+      name=&quot;wait&quot; debugbreak=&quot;False&quot; classname=&quot;WaitRotateFace&quot;
+      /&gt;&lt;/sequencer&gt;&lt;action repeatuntil=&quot;&quot; priority=&quot;&quot;
+      parametervalues=&quot;&quot; parameters=&quot;&quot; namespace=&quot;(global)&quot;
+      name=&quot;move front&quot; debugbreak=&quot;False&quot; classname=&quot;MoveForward&quot;
       /&gt;&lt;/selector&gt;&lt;/selector&gt;&lt;/behaviortree&gt;" type="System.String"
       id="treeData" /><field type="System.Array" id="treeBindings" elementtype="System.String"
       /></fields><references /></scriptableobject>
