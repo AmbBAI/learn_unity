@@ -68,3 +68,5 @@ $RECYCLE.BIN/
 premake*
 build*
 *.apk
+RAINProjectState.asset
+RAINProjectState.asset.meta
