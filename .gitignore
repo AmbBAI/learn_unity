@@ -68,3 +68,7 @@ $RECYCLE.BIN/
 premake*
 build*
 *.apk
+
+ShaderForge/
+ShaderForge.meta
+

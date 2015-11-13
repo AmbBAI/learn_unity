@@ -1,17 +1,17 @@
 fileFormatVersion: 2
-guid: 73f1ecdbdc458834ba2e28cd60683247
-timeCreated: 1441787912
+guid: 61e00918c177cd04586b7d75245f1a0f
+timeCreated: 1447399648
 licenseType: Pro
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Sweep.1
-    400000: //RootNode
-    400002: Sweep.1
-    2300000: Sweep.1
-    3300000: Sweep.1
-    4300000: Sweep.1
+    100000: Cube.004_Cube.004_None
+    100002: //RootNode
+    400000: Cube.004_Cube.004_None
+    400002: //RootNode
+    2300000: Cube.004_Cube.004_None
+    3300000: Cube.004_Cube.004_None
+    4300000: Cube.004_Cube.004_None
   materials:
     importMaterials: 1
     materialName: 0
