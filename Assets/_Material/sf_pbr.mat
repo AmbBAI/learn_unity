@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: sf_test
-  m_Shader: {fileID: 4800000, guid: a69662223eb674b4da6cd5fb74790735, type: 3}
+  m_Name: sf_pbr
+  m_Shader: {fileID: 4800000, guid: b97926e8c47455444b702e0e6d398ed0, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2000
@@ -99,6 +99,34 @@ Material:
           m_Texture: {fileID: 2800000, guid: 6fc41b185e725774285bfc37e5b386dc, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _node_4817
+        second:
+          m_Texture: {fileID: 2800000, guid: 7fd655a094c49384e81d1667444f83f5, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _node_2575
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _OccluMap
+        second:
+          m_Texture: {fileID: 2800000, guid: 7fd655a094c49384e81d1667444f83f5, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _node_129
+        second:
+          m_Texture: {fileID: 2800000, guid: c1e7afa9072b9be409e3ddbc32a6ce0c, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -148,6 +176,22 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _node_6961
+        second: 0
+      data:
+        first:
+          name: _Gloss
+        second: 1
+      data:
+        first:
+          name: _node_9457
+        second: 0
+      data:
+        first:
+          name: _node_8585
+        second: 0
     m_Colors:
       data:
         first:
@@ -157,3 +201,15 @@ Material:
         first:
           name: _Color
         second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _node_8935
+        second: {r: .5, g: .5, b: .5, a: 1}
+      data:
+        first:
+          name: _node_8937
+        second: {r: .5, g: .5, b: .5, a: 1}
+      data:
+        first:
+          name: _node_1730
+        second: {r: .5, g: .5, b: .5, a: 1}
