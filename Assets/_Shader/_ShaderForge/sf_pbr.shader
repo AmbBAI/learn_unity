@@ -1,15 +1,15 @@
 // Shader created with Shader Forge v1.16 
 // Shader Forge (c) Neat Corporation / Joachim Holmer - http://www.acegikmo.com/shaderforge/
 // Note: Manually altering this data may prevent you from opening it in Shader Forge
-/*SF_DATA;ver:1.16;sub:START;pass:START;ps:flbk:,iptp:0,cusa:False,bamd:0,lico:1,lgpr:1,limd:3,spmd:1,trmd:0,grmd:0,uamb:True,mssp:True,bkdf:True,hqlp:True,rprd:True,enco:False,rmgx:True,rpth:0,hqsc:True,nrmq:1,nrsp:0,vomd:0,spxs:False,tesm:0,culm:0,bsrc:0,bdst:1,dpts:2,wrdp:True,dith:0,rfrpo:True,rfrpn:Refraction,ufog:True,aust:True,igpj:False,qofs:0,qpre:1,rntp:1,fgom:False,fgoc:False,fgod:False,fgor:False,fgmd:0,fgcr:0.5,fgcg:0.5,fgcb:0.5,fgca:1,fgde:0.01,fgrn:0,fgrf:300,ofsf:0,ofsu:0,f2p0:False;n:type:ShaderForge.SFN_Final,id:3625,x:32716,y:32573,varname:node_3625,prsc:2|diff-3458-RGB,spec-8585-OUT,gloss-153-OUT,normal-5373-RGB,amdfl-6809-RGB,difocc-4817-R;n:type:ShaderForge.SFN_Tex2d,id:3458,x:32302,y:32375,ptovrint:False,ptlb:TexMap,ptin:_TexMap,varname:_TexMap,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,tex:fb0583218571c2c41a220640a541938a,ntxv:0,isnm:False;n:type:ShaderForge.SFN_Tex2d,id:5373,x:32084,y:32822,ptovrint:False,ptlb:BumpMap,ptin:_BumpMap,varname:_BumpMap,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,tex:0dc11e06a106cfc41b42a082058aad76,ntxv:2,isnm:False;n:type:ShaderForge.SFN_Slider,id:8585,x:32202,y:32600,ptovrint:False,ptlb:Metallic,ptin:_Metallic,varname:_Metallic,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:0,max:1;n:type:ShaderForge.SFN_Tex2d,id:4817,x:32441,y:32933,ptovrint:False,ptlb:OccluMap,ptin:_OccluMap,varname:_OccluMap,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,tex:7fd655a094c49384e81d1667444f83f5,ntxv:0,isnm:False;n:type:ShaderForge.SFN_AmbientLight,id:6809,x:32217,y:32933,varname:node_6809,prsc:2;n:type:ShaderForge.SFN_Slider,id:153,x:32286,y:32718,ptovrint:False,ptlb:Gloss,ptin:_Gloss,varname:_Gloss,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:1,max:1;proporder:3458-5373-8585-153-4817;pass:END;sub:END;*/
+/*SF_DATA;ver:1.16;sub:START;pass:START;ps:flbk:,iptp:0,cusa:False,bamd:0,lico:1,lgpr:1,limd:3,spmd:1,trmd:0,grmd:1,uamb:True,mssp:True,bkdf:True,hqlp:True,rprd:True,enco:False,rmgx:True,rpth:0,hqsc:True,nrmq:1,nrsp:0,vomd:0,spxs:False,tesm:0,culm:0,bsrc:0,bdst:1,dpts:2,wrdp:True,dith:0,rfrpo:True,rfrpn:Refraction,ufog:True,aust:True,igpj:False,qofs:0,qpre:1,rntp:1,fgom:False,fgoc:False,fgod:False,fgor:False,fgmd:0,fgcr:0.5,fgcg:0.5,fgcb:0.5,fgca:1,fgde:0.01,fgrn:0,fgrf:300,ofsf:0,ofsu:0,f2p0:False;n:type:ShaderForge.SFN_Final,id:3625,x:32716,y:32573,varname:node_3625,prsc:2|diff-3458-RGB,spec-8585-OUT,gloss-4720-R,normal-5373-RGB,amdfl-6809-RGB,difocc-4817-R;n:type:ShaderForge.SFN_Tex2d,id:3458,x:32302,y:32375,ptovrint:False,ptlb:TexMap,ptin:_TexMap,varname:_TexMap,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,tex:fb0583218571c2c41a220640a541938a,ntxv:0,isnm:False;n:type:ShaderForge.SFN_Tex2d,id:5373,x:32084,y:32822,ptovrint:False,ptlb:BumpMap,ptin:_BumpMap,varname:_BumpMap,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,tex:0dc11e06a106cfc41b42a082058aad76,ntxv:2,isnm:False;n:type:ShaderForge.SFN_Slider,id:8585,x:32202,y:32600,ptovrint:False,ptlb:Metallic,ptin:_Metallic,varname:_Metallic,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,min:0,cur:0,max:1;n:type:ShaderForge.SFN_Tex2d,id:4817,x:32441,y:32933,ptovrint:False,ptlb:OcclusionMap,ptin:_OcclusionMap,varname:_OcclusionMap,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,tex:7fd655a094c49384e81d1667444f83f5,ntxv:0,isnm:False;n:type:ShaderForge.SFN_AmbientLight,id:6809,x:32217,y:32933,varname:node_6809,prsc:2;n:type:ShaderForge.SFN_Tex2d,id:4720,x:32394,y:32711,ptovrint:False,ptlb:RoughnessMap,ptin:_RoughnessMap,varname:_RoughnessMap,prsc:2,glob:False,taghide:False,taghdr:False,tagprd:False,tagnsco:False,tagnrm:False,tex:9233911a4a6058e4e8f44f1c68a34dd8,ntxv:0,isnm:False;proporder:3458-5373-8585-4817-4720;pass:END;sub:END;*/
 
 Shader "Custom/sf_pbr" {
     Properties {
         _TexMap ("TexMap", 2D) = "white" {}
         _BumpMap ("BumpMap", 2D) = "black" {}
         _Metallic ("Metallic", Range(0, 1)) = 0
-        _Gloss ("Gloss", Range(0, 1)) = 1
-        _OccluMap ("OccluMap", 2D) = "white" {}
+        _OcclusionMap ("OcclusionMap", 2D) = "white" {}
+        _RoughnessMap ("RoughnessMap", 2D) = "white" {}
     }
     SubShader {
         Tags {
@@ -44,8 +44,8 @@ Shader "Custom/sf_pbr" {
             uniform sampler2D _TexMap; uniform float4 _TexMap_ST;
             uniform sampler2D _BumpMap; uniform float4 _BumpMap_ST;
             uniform float _Metallic;
-            uniform sampler2D _OccluMap; uniform float4 _OccluMap_ST;
-            uniform float _Gloss;
+            uniform sampler2D _OcclusionMap; uniform float4 _OcclusionMap_ST;
+            uniform sampler2D _RoughnessMap; uniform float4 _RoughnessMap_ST;
             struct VertexInput {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
@@ -109,7 +109,8 @@ Shader "Custom/sf_pbr" {
                 float Pi = 3.141592654;
                 float InvPi = 0.31830988618;
 ///////// Gloss:
-                float gloss = _Gloss;
+                float4 _RoughnessMap_var = tex2D(_RoughnessMap,TRANSFORM_TEX(i.uv0, _RoughnessMap));
+                float gloss = 1.0 - _RoughnessMap_var.r; // Convert roughness to gloss
                 float specPow = exp2( gloss * 10.0+1.0);
 /////// GI Data:
                 UnityLight light;
@@ -171,8 +172,8 @@ Shader "Custom/sf_pbr" {
                 float3 indirectDiffuse = float3(0,0,0);
                 indirectDiffuse += UNITY_LIGHTMODEL_AMBIENT.rgb; // Diffuse Ambient Light
                 indirectDiffuse += gi.indirect.diffuse;
-                float4 _OccluMap_var = tex2D(_OccluMap,TRANSFORM_TEX(i.uv0, _OccluMap));
-                indirectDiffuse *= _OccluMap_var.r; // Diffuse AO
+                float4 _OcclusionMap_var = tex2D(_OcclusionMap,TRANSFORM_TEX(i.uv0, _OcclusionMap));
+                indirectDiffuse *= _OcclusionMap_var.r; // Diffuse AO
                 float3 diffuse = (directDiffuse + indirectDiffuse) * diffuseColor;
 /// Final Color:
                 float3 finalColor = diffuse + specular;
@@ -211,7 +212,7 @@ Shader "Custom/sf_pbr" {
             uniform sampler2D _TexMap; uniform float4 _TexMap_ST;
             uniform sampler2D _BumpMap; uniform float4 _BumpMap_ST;
             uniform float _Metallic;
-            uniform float _Gloss;
+            uniform sampler2D _RoughnessMap; uniform float4 _RoughnessMap_ST;
             struct VertexInput {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
@@ -262,7 +263,8 @@ Shader "Custom/sf_pbr" {
                 float Pi = 3.141592654;
                 float InvPi = 0.31830988618;
 ///////// Gloss:
-                float gloss = _Gloss;
+                float4 _RoughnessMap_var = tex2D(_RoughnessMap,TRANSFORM_TEX(i.uv0, _RoughnessMap));
+                float gloss = 1.0 - _RoughnessMap_var.r; // Convert roughness to gloss
                 float specPow = exp2( gloss * 10.0+1.0);
 ////// Specular:
                 float NdotL = max(0, dot( normalDirection, lightDirection ));
@@ -320,7 +322,7 @@ Shader "Custom/sf_pbr" {
             #pragma target 3.0
             uniform sampler2D _TexMap; uniform float4 _TexMap_ST;
             uniform float _Metallic;
-            uniform float _Gloss;
+            uniform sampler2D _RoughnessMap; uniform float4 _RoughnessMap_ST;
             struct VertexInput {
                 float4 vertex : POSITION;
                 float2 texcoord0 : TEXCOORD0;
@@ -356,7 +358,8 @@ Shader "Custom/sf_pbr" {
                 float specularMonochrome;
                 float3 specColor;
                 diffColor = DiffuseAndSpecularFromMetallic( diffColor, _Metallic, specColor, specularMonochrome );
-                float roughness = 1.0 - _Gloss;
+                float4 _RoughnessMap_var = tex2D(_RoughnessMap,TRANSFORM_TEX(i.uv0, _RoughnessMap));
+                float roughness = _RoughnessMap_var.r;
                 o.Albedo = diffColor + specColor * roughness * roughness * 0.5;
                 
                 return UnityMetaFragment( o );
