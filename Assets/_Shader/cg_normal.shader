@@ -1,4 +1,4 @@
-﻿Shader "Custom/cg_batchtest_2p" {
+﻿Shader "Custom/cg_normal" {
 	Properties {
 	}
 	SubShader {
@@ -22,20 +22,23 @@
 				struct v2f
 				{
 					float4 pos : SV_POSITION;
-					float3 normal : TEXCOORD1;
+					float3 viewNormal : TEXCOORD1;
+					float3 worldNormal : TEXCOORD2;
 				};
 
 				v2f vert(vin i)
 				{
 					v2f o;
 					o.pos = mul (UNITY_MATRIX_MVP, i.position);
-					o.normal = mul ((float3x3)_Object2World, i.normal);
+					o.viewNormal = mul (UNITY_MATRIX_MV, i.normal).xyz;
+					o.worldNormal = mul (_Object2World, i.normal).xyz;
 					return o;
 				}
 
 				fixed4 frag(v2f i) : SV_Target
 				{
-					return fixed4(normalize(i.normal) + fixed3(1.,1.,1.), 1.) / 2.;
+					//return fixed4(normalize(i.worldNormal) + fixed3(1.,1.,1.), 1.) / 2.;
+					return fixed4(normalize(i.viewNormal) + fixed3(1.,1.,1.), 1.) / 2.;
 					//float l = max(0., dot(i.normal, normalize(float3(1.,1.,-1.))));
 					//return fixed4(l,l,l,1.);
 				}
