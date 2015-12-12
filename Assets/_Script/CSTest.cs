@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+
 public class CSTest : MonoBehaviour {
 
 
@@ -32,4 +33,5 @@ public class CSTest : MonoBehaviour {
 
 	[DllImport("cpp_plugin")]
 	private static extern int add(int a, int b);
+
 }
