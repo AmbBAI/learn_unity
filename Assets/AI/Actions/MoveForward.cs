@@ -7,7 +7,6 @@ using RAIN.Core;
 [RAINAction]
 public class MoveForward : RAINAction
 {
-	public RAIN.Representation.Expression moveDistance;
 	Transform _transform;
 
     public override void Start(RAIN.Core.AI ai)
@@ -19,8 +18,7 @@ public class MoveForward : RAINAction
 
 	public override ActionResult Execute(RAIN.Core.AI ai)
     {
-		float _moveDistance = moveDistance.Evaluate<float>(ai.DeltaTime, ai.WorkingMemory);
-		ai.Motor.MoveTo(_transform.position + _transform.forward * _moveDistance);
+		ai.Motor.MoveTo(_transform.position + _transform.forward);
 		return ActionResult.SUCCESS;
     }
 
