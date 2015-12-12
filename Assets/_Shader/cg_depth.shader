@@ -39,8 +39,8 @@
 //		i.projection.z = i.projection.z / i.projection.w;
 //		i.projection.z = Linear01Depth(i.projection.z);
 //		return i.projection.zzzz;
-		//i.projMatrix.w = i.projMatrix.w * _ZBufferParams.z / 2.;
-		i.projMatrix.w = i.projMatrix.w * (1. / -.30018) / 2.;
+		i.projMatrix.w = i.projMatrix.w * _ZBufferParams.z / 2.;
+		//i.projMatrix.w = i.projMatrix.w * (1. / -.30018) / 2.;
 		return i.projMatrix.wwww;
 	}
 		ENDCG

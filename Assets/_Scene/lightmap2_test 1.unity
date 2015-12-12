@@ -66,7 +66,7 @@ LightmapSettings:
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
-  m_LightmapSnapshot: {fileID: 112000001, guid: adf39208cd1b1dc409931cd42b6e215d,
+  m_LightmapSnapshot: {fileID: 112000001, guid: 984ad26b2e0dd1446bf5a858eb8aacf2,
     type: 2}
   m_RuntimeCPUUsage: 25
 --- !u!196 &5
@@ -173,7 +173,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 6
   m_Type: 2
-  m_Color: {r: 0, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
@@ -203,11 +203,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 223733285}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.61519122, y: .104885936, z: 2}
+  m_LocalPosition: {x: 2, y: 1, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 548991414}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
 --- !u!1 &525823016
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,7 +220,6 @@ GameObject:
   - 92: {fileID: 525823019}
   - 124: {fileID: 525823018}
   - 81: {fileID: 525823017}
-  - 114: {fileID: 525823022}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -295,53 +294,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &525823022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 525823016}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 950cefe002d77234299a80f858c6ff01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lightMap1:
-  - near: {fileID: 2800000, guid: e121d21f2b994ed45ab7b6f6a5ca9c20, type: 3}
-    far: {fileID: 2800000, guid: 17927dc2e56d69b43a8f13e228653b7f, type: 3}
-  lightMap2:
-  - near: {fileID: 2800000, guid: 752a76d0a3391694ebe669b1a457eb43, type: 3}
-    far: {fileID: 2800000, guid: 8aefc8f1b162c7042b0498b4108c11d4, type: 3}
---- !u!1 &548991413
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 548991414}
-  m_Layer: 0
-  m_Name: lightmap
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &548991414
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 548991413}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.615191221, y: .895114064, z: 4.76837158e-07}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 777191855}
-  - {fileID: 1166320305}
-  - {fileID: 223733287}
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
 --- !u!1 &777191853
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +320,7 @@ Light:
   serializedVersion: 6
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: .600000024
+  m_Intensity: .400000006
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -385,7 +337,7 @@ Light:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_Lightmapping: 2
+  m_Lightmapping: 1
   m_BounceIntensity: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -396,12 +348,12 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 777191853}
-  m_LocalRotation: {x: .367542773, y: -.229293421, z: .120049298, w: .893266499}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: .367542744, y: -.229293406, z: .12004929, w: .893266439}
+  m_LocalPosition: {x: -.615191221, y: .895114064, z: 4.76837158e-07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 548991414}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
 --- !u!1 &1166320303
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,8 +379,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 6
   m_Type: 2
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Intensity: 2.20000005
+  m_Color: {r: 0, g: 0, b: 1, a: 1}
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -457,11 +409,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1166320303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.38480878, y: .104885936, z: -2}
+  m_LocalPosition: {x: -2, y: 1, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 548991414}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
 --- !u!1 &1370106205
 GameObject:
   m_ObjectHideFlags: 0
