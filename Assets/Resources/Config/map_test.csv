@@ -1,0 +1,6 @@
+﻿key,intValue,intArray,floatValue,floatArray,strValue
+1,1,2,1.5,1.2,"1,1|2#3~4"
+2,,2|3#123,4,1.2|3.3333|-1.2,中文
+,,,,,
+10,0,,,1.2|3,kkkk
+4,1,11~22222,1,,
