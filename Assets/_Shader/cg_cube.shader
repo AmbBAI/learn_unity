@@ -1,4 +1,6 @@
-﻿Shader "Custom/cg_cube" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Custom/cg_cube" {
 	Properties {
 	  _MainTex("Main Tex", 2D) = "black"
 	  _CubeMap("Cube Map", Cube) = "" {}
@@ -45,9 +47,9 @@
 		{
 			v2f o;
 			o.pos = mul (UNITY_MATRIX_MVP, float4(i.position, 1.));
-			o.normal = normalize(mul((float3x3)_Object2World, normalize(i.normal)));
+			o.normal = normalize(mul((float3x3)unity_ObjectToWorld, normalize(i.normal)));
 			o.texcoord = i.texcoord * float2(5., 1.);
-			o.worldPos = mul(_Object2World, float4(i.position, 1.)).xyz;
+			o.worldPos = mul(unity_ObjectToWorld, float4(i.position, 1.)).xyz;
 			return o;
 		}
 

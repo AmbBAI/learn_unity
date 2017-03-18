@@ -1,4 +1,6 @@
-﻿Shader "Custom/cg_batchtest_2p" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Custom/cg_batchtest_2p" {
 	Properties {
 	}
 	SubShader {
@@ -29,7 +31,7 @@
 				{
 					v2f o;
 					o.pos = mul (UNITY_MATRIX_MVP, i.position);
-					o.normal = mul ((float3x3)_Object2World, i.normal);
+					o.normal = mul ((float3x3)unity_ObjectToWorld, i.normal);
 					return o;
 				}
 

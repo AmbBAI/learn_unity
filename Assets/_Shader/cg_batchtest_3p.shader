@@ -1,4 +1,6 @@
-﻿Shader "Custom/cg_batchtest_3p" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Custom/cg_batchtest_3p" {
 	Properties {
 		_MainTex ("mainTex", 2D) = "white"
 	}
@@ -35,7 +37,7 @@
 					v2f o;
 					o.pos = mul (UNITY_MATRIX_MVP, i.position);
 					o.texcoord = i.texcoord;
-					o.normal = mul ((float3x3)_Object2World, i.normal);
+					o.normal = mul ((float3x3)unity_ObjectToWorld, i.normal);
 					return o;
 				}
 

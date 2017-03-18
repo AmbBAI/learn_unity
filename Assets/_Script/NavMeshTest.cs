@@ -3,7 +3,7 @@ using System.Collections;
 
 public class NavMeshTest : MonoBehaviour {
 
-	public NavMeshAgent agent;
+	public UnityEngine.AI.NavMeshAgent agent;
 	public Animation anim;
 
 	void Update () {

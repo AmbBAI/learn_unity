@@ -1,4 +1,6 @@
-﻿Shader "Custom/cg_light" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Custom/cg_light" {
 	Properties {
 	}
 	SubShader {
@@ -36,7 +38,7 @@
 				{
 					v2f o;
 					o.pos = mul (UNITY_MATRIX_MVP, i.position);
-					o.normal = mul ((float3x3)_Object2World, i.normal);
+					o.normal = mul ((float3x3)unity_ObjectToWorld, i.normal);
 
 					fixed4 ndotl;
 					ndotl.x = max(0., dot(i.normal, normalize(float3(unity_4LightPosX0.x, unity_4LightPosY0.x, unity_4LightPosZ0.x))));
@@ -95,7 +97,7 @@
 				{
 					v2f o;
 					o.pos = mul (UNITY_MATRIX_MVP, i.position);
-					o.normal = mul ((float3x3)_Object2World, i.normal);
+					o.normal = mul ((float3x3)unity_ObjectToWorld, i.normal);
 					return o;
 				}
 

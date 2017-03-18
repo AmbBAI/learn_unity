@@ -1,4 +1,6 @@
-﻿Shader "Custom/cg_batchtest_4p" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Custom/cg_batchtest_4p" {
 	Properties {
 		_MainTex ("mainTex", 2D) = "white"
 		_BumpTex ("bumpTex", 2D) = "bump"
@@ -40,8 +42,8 @@
 					v2f o;
 					o.pos = mul (UNITY_MATRIX_MVP, i.position);
 					o.texcoord = i.texcoord;
-					fixed3 worldNormal = mul((float3x3)_Object2World, i.normal);
-					fixed3 worldTangent = mul((float3x3)_Object2World, i.tangent.xyz);
+					fixed3 worldNormal = mul((float3x3)unity_ObjectToWorld, i.normal);
+					fixed3 worldTangent = mul((float3x3)unity_ObjectToWorld, i.tangent.xyz);
 					fixed3 worldBinormal = cross(worldNormal, worldTangent) * i.tangent.w;
 					o.tspace0 = float3(worldTangent.x, worldBinormal.x, worldNormal.x);
 					o.tspace1 = float3(worldTangent.y, worldBinormal.y, worldNormal.y);

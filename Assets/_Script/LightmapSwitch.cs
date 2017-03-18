@@ -21,8 +21,8 @@ public class LightmapSwitch : MonoBehaviour {
         for (int i=0; i<lightMap.Length; ++i)
         {
             lightMap[i] = new LightmapData();
-            lightMap[i].lightmapNear = lightMap1[i].near;
-            lightMap[i].lightmapFar = lightMap1[i].far;
+            lightMap[i].lightmapDir = lightMap1[i].near;
+            lightMap[i].lightmapLight = lightMap1[i].far;
         }
         LightmapSettings.lightmaps = lightMap;
 
@@ -40,8 +40,8 @@ public class LightmapSwitch : MonoBehaviour {
         for (int i = 0; i < lightMap.Length; ++i)
         {
             lightMap[i] = new LightmapData();
-            lightMap[i].lightmapNear = lightMap2[i].near;
-            lightMap[i].lightmapFar = lightMap2[i].far;
+            lightMap[i].lightmapDir = lightMap2[i].near;
+            lightMap[i].lightmapLight = lightMap2[i].far;
         }
         LightmapSettings.lightmaps = lightMap;
 

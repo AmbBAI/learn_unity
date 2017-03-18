@@ -1,4 +1,6 @@
-﻿Shader "Custom/cg_normal" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Custom/cg_normal" {
 	Properties {
 	}
 	SubShader {
@@ -31,7 +33,7 @@
 					v2f o;
 					o.pos = mul (UNITY_MATRIX_MVP, i.position);
 					o.viewNormal = mul (UNITY_MATRIX_MV, i.normal).xyz;
-					o.worldNormal = mul (_Object2World, i.normal).xyz;
+					o.worldNormal = mul (unity_ObjectToWorld, i.normal).xyz;
 					return o;
 				}
 

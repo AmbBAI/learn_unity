@@ -1,4 +1,6 @@
-﻿Shader "Custom/cg_water" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Custom/cg_water" {
     Properties {
     	WAVE_MOVEMENT ("WAVE_MOVEMENT", Float) = .1
     	WAVE_HEIGHT ("WAVE_HEIGHT", Float) = .1
@@ -70,7 +72,7 @@
         	float waveHeightFactor = (wave + 1.) * .5;
         	pos.x += waveHeightFactor * WAVE_MOVEMENT * i.a_color.g * i.a_color.b;
         	pos.y += wave * WAVE_HEIGHT * i.a_color.b;
-            float4 w_pos =  mul (_Object2World, pos);
+            float4 w_pos =  mul (unity_ObjectToWorld, pos);
         	o.position = mul (UNITY_MATRIX_MVP, pos);
 
 			float maxValue = 0.55;//0.5;
